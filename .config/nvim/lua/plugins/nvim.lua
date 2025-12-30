@@ -86,9 +86,7 @@ return {
                 { 'javascriptreact', 'javascript', 'html' }
             )
 
-            require('luasnip.loaders.from_lua').lazy_load({
-                paths = { '~/.config/nvim/lua/snippets' },
-            })
+            require('luasnip.loaders.from_lua').lazy_load()
         end,
         keys = {
             -- restore digraph mapping
@@ -250,68 +248,19 @@ return {
     {
         'catgoose/nvim-colorizer.lua',
         opts = {
-            filetypes = {
-                'config',
-                html = { names = true },
-                css = { names = true },
-                'conf',
-                'sh',
-                'tmux',
-                'swayconfig',
-                'zsh',
-                unpack(vim.g.markdown_fenced_languages),
-            },
             user_default_options = {
                 names = false,
                 rrggbbaa = true,
-                aarrggbb = true,
                 css = true,
-                rgb_fun = true,
+                css_fn = true,
+                rgb_fn = true,
                 hsl_fn = true,
-                tailwind = true,
-                xterm = true,
             },
         },
         event = 'VeryLazy',
-        ft = {
-            'conf',
-            'sh',
-            'swayconfig',
-            'tmux',
-            'zsh',
-            unpack(vim.g.markdown_fenced_languages),
-        },
-    },
-    {
-        'phaazon/hop.nvim',
-        config = function()
-            require('hop').setup()
-            local hi = require('colors').hi
-            hi('HopUnmatched', { none = true })
-            hi('HopNextKey', { reverse = true })
-        end,
-        keys = { { '<c-space>', vim.cmd.HopChar2 } },
     },
     {
         'stevearc/oil.nvim',
-        config = function(_, opts)
-            require('oil').setup(opts)
-
-            vim.api.nvim_create_autocmd('FileType', {
-                pattern = 'oil',
-                callback = function(o)
-                    local ok, bufremove = pcall(require, 'mini.bufremove')
-                    bmap(
-                        { 'n', 'q', ok and bufremove.delete or vim.cmd.bd },
-                        { buffer = o.buf }
-                    )
-                end,
-                group = vim.api.nvim_create_augroup(
-                    'OilBufremove',
-                    { clear = true }
-                ),
-            })
-        end,
         event = function()
             if vim.fn.isdirectory(vim.fn.expand('%:p')) == 1 then
                 return 'VimEnter'
@@ -351,6 +300,14 @@ return {
                 ['<C-r>'] = 'actions.refresh',
                 ['<C-s>'] = { 'actions.select', opts = { vertical = true } },
                 ['<C-x>'] = { 'actions.select', opts = { horizontal = true } },
+                ['q'] = function()
+                    local ok, bufremove = pcall(require, 'mini.bufremove')
+                    if ok then
+                        bufremove.delete()
+                    else
+                        vim.cmd.bd()
+                    end
+                end,
             },
         },
     },
@@ -378,7 +335,6 @@ return {
             },
         },
     },
-    { 'tommcdo/vim-exchange', event = 'VeryLazy' },
     { 'tpope/vim-abolish', event = 'VeryLazy' },
     { 'tpope/vim-sleuth', event = 'BufReadPost' },
     {
@@ -465,33 +421,6 @@ return {
                     { clear = true }
                 ),
             })
-            local socket_path = ('/tmp/nvim-%d.sock'):format(vim.fn.getpid())
-            vim.fn.serverstart(socket_path)
         end,
-    },
-    {
-        'krady21/compiler-explorer.nvim',
-        keys = {
-            {
-                '<leader>Ce',
-                function()
-                    local cmd = { 'CECompileLive', 'compiler=g143' }
-                    if vim.fn.filereadable('compile_flags.txt') == 1 then
-                        for line in io.lines('compile_flags.txt') do
-                            if line ~= '' then
-                                table.insert(cmd, 'flags=' .. line)
-                            end
-                        end
-                    end
-                    vim.cmd(table.concat(cmd, ''))
-                end,
-            },
-        },
-        opts = {
-            line_match = {
-                highlight = true,
-                jump = true,
-            },
-        },
     },
 }

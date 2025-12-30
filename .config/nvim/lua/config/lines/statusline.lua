@@ -1,4 +1,4 @@
-local empty = require('utils').empty
+local empty = require('config.utils').empty
 
 local M = {}
 
@@ -20,9 +20,6 @@ local git = {
     highlight = 'magenta',
     value = function()
         return vim.b.gitsigns_head
-    end,
-    condition = function()
-        return not empty(vim.b.gitsigns_head)
     end,
 }
 
@@ -82,14 +79,6 @@ local filetype = {
 
         return ft
     end,
-    condition = function()
-        local ft = vim.api.nvim_get_option_value(
-            'filetype',
-            { buf = vim.api.nvim_get_current_buf() }
-        )
-
-        return not empty(ft) or not empty(vim.bo.buftype)
-    end,
 }
 
 local lineinfo = {
@@ -112,7 +101,7 @@ M.components = {
     },
 }
 
-local format_components = require('lines.utils').format_components
+local format_components = require('config.lines.utils').format_components
 
 M.statusline = function()
     return ('%s%%=%s'):format(

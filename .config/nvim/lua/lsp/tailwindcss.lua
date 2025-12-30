@@ -5,10 +5,10 @@ return {
         'typescript',
         'typescriptreact',
     },
-    root_dir = require('lspconfig.util').root_pattern(
+    root_markers = {
         'tailwind.config.js',
         'tailwind.config.ts',
         'postcss.config.js',
-        'postcss.config.ts'
-    ),
+        'postcss.config.ts',
+    },
 }

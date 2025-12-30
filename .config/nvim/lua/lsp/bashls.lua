@@ -7,4 +7,9 @@ return {
         end
     end,
     filetypes = { 'bash', 'sh', 'zsh' },
+    settings = {
+        bashIde = {
+            globPattern = '*@(.sh|.inc|.bash|.command)',
+        },
+    },
 }

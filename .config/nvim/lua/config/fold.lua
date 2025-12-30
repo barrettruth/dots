@@ -16,76 +16,9 @@ function M.setup()
         pattern = '*',
         callback = function()
             vim.wo.foldmethod = 'expr'
-            vim.wo.foldexpr = 'v:lua.require("fold").foldexpr()'
+            vim.wo.foldexpr = 'v:lua.require("config.fold").foldexpr()'
         end,
     })
-end
-
---- @param start_line? number Starting line (default: 1)
---- @param end_line? number Ending line (default: last line in buffer)
-function M.debug(start_line, end_line)
-    local bufnr = vim.api.nvim_get_current_buf()
-    local total_lines = vim.api.nvim_buf_line_count(bufnr)
-    start_line = start_line or 1
-    end_line = end_line or total_lines
-    local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
-    if not ok or not parser then
-        print('No treesitter parser available')
-        return
-    end
-    local trees = parser:parse()
-    if not trees or #trees == 0 then
-        print('No parse trees available')
-        return
-    end
-    local root = trees[1]:root()
-    for i = start_line, end_line do
-        vim.v.lnum = i
-        local fold_result = M.foldexpr()
-        local line_text = vim.fn.getline(i)
-        local content = line_text:sub(1, 50)
-        local last_col = line_text:find('%S%s*$')
-        local node_name = 'none'
-        local display_node = nil
-        if last_col then
-            local node = root:named_descendant_for_range(
-                i - 1,
-                last_col - 1,
-                i - 1,
-                last_col - 1
-            )
-            if node then
-                local temp = node
-                while temp do
-                    local srow, _, _, _ = temp:range()
-                    if srow + 1 == i then
-                        display_node = temp
-                        break
-                    end
-                    temp = temp:parent()
-                end
-                display_node = display_node or node
-            end
-        else
-            local enclosing = root:descendant_for_range(i - 1, 0, i - 1, 0)
-            if enclosing then
-                while enclosing and not enclosing:named() do
-                    enclosing = enclosing:parent()
-                end
-                display_node = enclosing
-            end
-        end
-        node_name = display_node and display_node:type() or 'none'
-        print(
-            string.format(
-                '%-4d [%-3s] %-32s %s',
-                i,
-                fold_result,
-                node_name,
-                content
-            )
-        )
-    end
 end
 
 --- @return string Fold level (as string for foldexpr)

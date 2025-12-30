@@ -15,6 +15,32 @@ return {
         ---@module 'blink.cmp'
         ---@type blink.cmp.Config
         event = { 'InsertEnter', 'CmdlineEnter' },
+        config = function(_, opts)
+            vim.o.pumheight = 15
+            opts.completion.menu.max_height = vim.o.pumheight
+            require('blink.cmp').setup(opts)
+            vim.schedule(function()
+                local blink = require('blink.cmp')
+
+                local orig_show = blink.show
+
+                blink.show = function(...)
+                    local mode = vim.api.nvim_get_mode().mode
+                    local bt = vim.api.nvim_buf_get_option(0, 'buftype')
+
+                    vim.notify(
+                        ('BLINK SHOW() called | mode=%s | buftype=%s\n%s'):format(
+                            mode,
+                            bt,
+                            debug.traceback()
+                        ),
+                        vim.log.levels.ERROR
+                    )
+
+                    return orig_show(...)
+                end
+            end)
+        end,
         opts = {
             keymap = {
                 ['<c-p>'] = { 'select_prev' },
@@ -32,12 +58,19 @@ return {
                 menu = {
                     auto_show = false,
                     scrollbar = false,
-                    max_height = vim.o.pumheight,
                     draw = {
-                        columns = {
-                            { 'label', 'label_description' },
-                            { 'kind' },
-                        },
+                        columns = function(ctx)
+                            if ctx.mode == 'cmdline' then
+                                return {
+                                    { 'label', 'label_description', gap = 1 },
+                                }
+                            else
+                                return {
+                                    { 'label', 'label_description' },
+                                    { 'kind' },
+                                }
+                            end
+                        end,
                     },
                 },
             },
@@ -69,45 +102,126 @@ return {
     {
         'nvimtools/none-ls.nvim',
         config = function()
-            require('lsp').setup_none_ls()
+            local null_ls = require('null-ls')
+            local builtins = null_ls.builtins
+            local code_actions, diagnostics, formatting, hover =
+                builtins.code_actions,
+                builtins.diagnostics,
+                builtins.formatting,
+                builtins.hover
+
+            null_ls.setup({
+                border = 'single',
+                sources = {
+                    require('none-ls.code_actions.eslint_d'),
+                    code_actions.gitrebase,
+
+                    diagnostics.buf,
+                    diagnostics.checkmake,
+                    require('none-ls.diagnostics.cpplint').with({
+                        extra_args = {
+                            '--filter',
+                            '-legal/copyright',
+                            '-whitespace/indent',
+                        },
+                        prepend_extra_args = true,
+                    }),
+                    require('none-ls.diagnostics.eslint_d'),
+                    diagnostics.hadolint,
+                    diagnostics.mypy.with({
+                        extra_args = { '--check-untyped-defs' },
+                        runtime_condition = function(params)
+                            return vim.fn.executable('mypy') == 1
+                                and require('null-ls.utils').path.exists(
+                                    params.bufname
+                                )
+                        end,
+                    }),
+                    diagnostics.selene,
+                    diagnostics.zsh,
+
+                    formatting.black,
+                    formatting.isort.with({
+                        extra_args = { '--profile', 'black' },
+                    }),
+                    formatting.buf,
+                    formatting.cbfmt,
+                    formatting.cmake_format,
+                    require('none-ls.formatting.latexindent'),
+                    formatting.prettierd.with({
+                        env = {
+                            XDG_RUNTIME_DIR = vim.env.XDG_RUNTIME_DIR
+                                or (vim.env.XDG_DATA_HOME .. '/prettierd'),
+                        },
+                        extra_args = function(params)
+                            if params.ft == 'jsonc' then
+                                return { '--trailing-comma', 'none' }
+                            end
+                            return {}
+                        end,
+                        filetypes = {
+                            'css',
+                            'graphql',
+                            'html',
+                            'javascript',
+                            'javascriptreact',
+                            'json',
+                            'jsonc',
+                            'markdown',
+                            'mdx',
+                            'typescript',
+                            'typescriptreact',
+                            'yaml',
+                        },
+                    }),
+                    formatting.shfmt.with({
+                        extra_args = { '-i', '2' },
+                    }),
+                    formatting.stylua.with({
+                        condition = function(utils)
+                            return utils.root_has_file({
+                                'stylua.toml',
+                                '.stylua.toml',
+                            })
+                        end,
+                    }),
+
+                    hover.dictionary,
+                    hover.printenv,
+                },
+                on_attach = require('config.lsp').on_attach,
+                debounce = 0,
+            })
         end,
         dependencies = 'nvimtools/none-ls-extras.nvim',
     },
     {
-        'neovim/nvim-lspconfig',
-        dependencies = {
-            'b0o/SchemaStore.nvim',
-            {
-                'saecki/live-rename.nvim',
-                config = function(_, opts)
-                    require('live-rename').setup(opts)
-                    local live_rename = require('live-rename')
-                    vim.api.nvim_create_autocmd('LspAttach', {
-                        callback = function(o)
-                            local clients =
-                                vim.lsp.get_clients({ buffer = o.buf })
-                            for _, client in ipairs(clients) do
-                                if
-                                    client:supports_method(
-                                        'textDocument/rename'
-                                    )
-                                then
-                                    bmap(
-                                        { 'n', 'grn', live_rename.rename },
-                                        { buffer = o.buf }
-                                    )
-                                end
-                            end
-                        end,
-                        group = vim.api.nvim_create_augroup(
-                            'LiveRenameMap',
-                            { clear = true }
-                        ),
-                    })
+        'b0o/SchemaStore.nvim',
+    },
+    {
+        'saecki/live-rename.nvim',
+        config = function(_, opts)
+            require('live-rename').setup(opts)
+            local live_rename = require('live-rename')
+            vim.api.nvim_create_autocmd('LspAttach', {
+                callback = function(o)
+                    local clients = vim.lsp.get_clients({ buffer = o.buf })
+                    for _, client in ipairs(clients) do
+                        if client:supports_method('textDocument/rename') then
+                            bmap(
+                                { 'n', 'grn', live_rename.rename },
+                                { buffer = o.buf }
+                            )
+                        end
+                    end
                 end,
-                keys = { 'grn' },
-            },
-        },
+                group = vim.api.nvim_create_augroup(
+                    'LiveRenameMap',
+                    { clear = true }
+                ),
+            })
+        end,
+        keys = { 'grn' },
     },
     {
         'yioneko/nvim-vtsls',
@@ -242,7 +356,6 @@ return {
         end,
         dependencies = {
             'nvim-lua/plenary.nvim',
-            'neovim/nvim-lspconfig',
         },
         ft = {
             'javascript',
@@ -264,7 +377,6 @@ return {
                 enabled = false,
             },
         },
-        dependencies = { 'neovim/nvim-lspconfig' },
         event = 'LspAttach',
     },
     {

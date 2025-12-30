@@ -9,7 +9,7 @@ return {
         return '%#LineNr#' .. vim.v.relnum
     end,
     fold = function()
-        local expr = require('fold').foldexpr()
+        local expr = require('config.fold').foldexpr()
         if expr:sub(1, 1) == '>' then
             if vim.fn.foldclosed(vim.v.lnum) ~= -1 then
                 return '>'
@@ -20,6 +20,6 @@ return {
         return ' '
     end,
     statuscolumn = function()
-        return '%{%v:lua.require("lines.statuscolumn").fold()%}%s%=%{%v:lua.require("lines.statuscolumn").num()%} '
+        return '%{%v:lua.require("config.lines.statuscolumn").fold()%}%s%=%{%v:lua.require("config.lines.statuscolumn").num()%} '
     end,
 }

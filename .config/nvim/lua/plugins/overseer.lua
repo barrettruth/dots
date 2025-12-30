@@ -56,6 +56,7 @@ local current_task = nil
 return {
     'stevearc/overseer.nvim',
     init = function()
+        -- close all tasks on exit
         vim.api.nvim_create_autocmd('VimLeavePre', {
             callback = function()
                 local overseer = require('overseer')

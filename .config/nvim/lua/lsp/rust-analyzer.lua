@@ -20,7 +20,7 @@ return {
         },
     },
     on_attach = function(...)
-        require('lsp').on_attach(...)
+        require('config.lsp').on_attach(...)
         bmap({ 'n', '\\Rc', '<cmd>RustLsp codeAction<cr>' })
         bmap({ 'n', '\\Rm', '<cmd>RustLsp expandMacro<cr>' })
         bmap({ 'n', '\\Ro', '<cmd>RustLsp openCargo<cr>' })

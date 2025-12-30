@@ -42,21 +42,24 @@ return {
                     fzf_args = (
                         vim.env.FZF_DEFAULT_OPTS
                             :gsub('%-%-bind=ctrl%-a:select%-all', '')
-                            :gsub('%-%-color=[^%s]+', '')
+                            :gsub('--color=[^%s]+', '')
                     ),
                 },
                 branches = {
                     fzf_args = (
                         vim.env.FZF_DEFAULT_OPTS
                             :gsub('%-%-bind=ctrl%-a:select%-all', '')
-                            :gsub('%-%-color=[^%s]+', '')
+                            :gsub('--color=[^%s]+', '')
                     ),
                 },
             },
         })
 
-        require('fzf_reload').setup(opts)
-        require('fzf_reload').reload()
+        local ok, fzf_reload = pcall(require, 'config.fzf_reload')
+        if ok then
+            fzf_reload.setup(opts)
+            fzf_reload.reload()
+        end
     end,
     keys = {
         {

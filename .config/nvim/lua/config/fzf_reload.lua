@@ -3,6 +3,9 @@ M.opts = nil
 
 function M.setup(opts)
     M.opts = vim.deepcopy(opts)
+    -- allow connections from `theme` script
+    local socket_path = ('/tmp/nvim-%d.sock'):format(vim.fn.getpid())
+    vim.fn.serverstart(socket_path)
 end
 
 function M.reload()
