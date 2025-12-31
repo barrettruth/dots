@@ -7,6 +7,16 @@ local prev = nil
 return {
     {
         'tpope/vim-fugitive',
+        init = function()
+            vim.api.nvim_create_autocmd('TabClosed', {
+                callback = function(args)
+                    local closed_tab = tonumber(args.match)
+                    if closed_tab == git_tab then
+                        git_tab = nil
+                    end
+                end,
+            })
+        end,
         keys = {
             {
                 desc = 'Toggle Fugitive Tab',

@@ -151,7 +151,7 @@ return {
                     formatting.prettierd.with({
                         env = {
                             XDG_RUNTIME_DIR = vim.env.XDG_RUNTIME_DIR
-                                or (vim.env.XDG_DATA_HOME .. '/prettierd'),
+                                or ((vim.env.XDG_DATA_HOME or (vim.env.HOME .. '/.local/share')) .. '/prettierd'),
                         },
                         extra_args = function(params)
                             if params.ft == 'jsonc' then

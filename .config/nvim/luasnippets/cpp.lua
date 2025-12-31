@@ -126,10 +126,7 @@ int main() {{  // {{{{{{
     solve();
   }}
   return 0;
-}}
-
-// vim: set foldmethod=marker foldmarker={{{{{{,}}}}}}
-// }}}}}}]],
+}}  // vim: set foldmethod=marker foldmarker={{{{{{,}}}}}}]],
     },
     {
         trig = 'atcoder',
@@ -151,10 +148,7 @@ int main() {{  // {{{{{{
 #endif
   solve();
   return 0;
-}}
-
-// vim: set foldmethod=marker foldmarker={{{{{{,}}}}}}
-// }}}}}}]],
+}}  // vim: set foldmethod=marker foldmarker={{{{{{,}}}}}}]],
     },
     {
         trig = 'cses',
@@ -176,10 +170,7 @@ int main() {{  // {{{{{{
 #endif
   solve();
   return 0;
-}}
-
-// vim: set foldmethod=marker foldmarker={{{{{{,}}}}}}
-// }}}}}}]],
+}}  // vim: set foldmethod=marker foldmarker={{{{{{,}}}}}}]],
     },
 }) do
     table.insert(cppsnippets, s(entry.trig, fmt(entry.body, { i(1) })))

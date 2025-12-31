@@ -11,19 +11,11 @@ au('VimEnter', {
     once = true,
     callback = function()
         _G.main_tab = vim.api.nvim_get_current_tabpage()
-        map({
-            desc = 'Go to main tab',
-            'n',
-            '<leader>c',
-            function()
-                if
-                    _G.main_tab
-                    and vim.api.nvim_tabpage_is_valid(_G.main_tab)
-                then
-                    vim.api.nvim_set_current_tabpage(_G.main_tab)
-                end
-            end,
-        })
+        vim.keymap.set('n', '<leader>c', function()
+            if _G.main_tab and vim.api.nvim_tabpage_is_valid(_G.main_tab) then
+                vim.api.nvim_set_current_tabpage(_G.main_tab)
+            end
+        end, { desc = 'Go to main tab' })
     end,
 })
 
@@ -38,7 +30,9 @@ au({ 'TermOpen', 'BufWinEnter' }, {
 })
 
 au('BufWritePost', {
-    pattern = os.getenv('XDG_CONFIG_HOME') .. '/dunst/dunstrc',
+    pattern = (
+        os.getenv('XDG_CONFIG_HOME') or (os.getenv('HOME') .. '/.config')
+    ) .. '/dunst/dunstrc',
     callback = function()
         vim.fn.system('killall dunst && nohup dunst &; disown')
     end,

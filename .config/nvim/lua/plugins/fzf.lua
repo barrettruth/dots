@@ -120,7 +120,10 @@ return {
             file_icons = false,
             no_header_i = true,
         },
-        fzf_args = vim.env.FZF_DEFAULT_OPTS:gsub('%-%-color=[^%s]+', ''),
+        fzf_args = (vim.env.FZF_DEFAULT_OPTS or ''):gsub(
+            '%-%-color=[^%s]+',
+            ''
+        ),
         grep = {
             file_icons = false,
             no_header_i = true,

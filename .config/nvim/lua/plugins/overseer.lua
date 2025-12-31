@@ -56,7 +56,6 @@ local current_task = nil
 return {
     'stevearc/overseer.nvim',
     init = function()
-        -- close all tasks on exit
         vim.api.nvim_create_autocmd('VimLeavePre', {
             callback = function()
                 local overseer = require('overseer')
@@ -120,17 +119,53 @@ return {
                     )
                     return
                 end
+
+                local function has_overseer_buf(tab)
+                    if not current_task then
+                        return false
+                    end
+                    local bufnr = current_task:get_bufnr()
+                    if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
+                        return false
+                    end
+                    local wins = vim.api.nvim_tabpage_list_wins(tab)
+                    for _, win in ipairs(wins) do
+                        if vim.api.nvim_win_get_buf(win) == bufnr then
+                            return true
+                        end
+                    end
+                    return false
+                end
+
+                if
+                    overseer_tab
+                    and vim.api.nvim_tabpage_is_valid(overseer_tab)
+                    and not has_overseer_buf(overseer_tab)
+                then
+                    local prev_tab = vim.api.nvim_get_current_tabpage()
+                    vim.api.nvim_set_current_tabpage(overseer_tab)
+                    vim.cmd.tabclose()
+                    overseer_tab = nil
+                    if
+                        prev_tab ~= overseer_tab
+                        and vim.api.nvim_tabpage_is_valid(prev_tab)
+                    then
+                        vim.api.nvim_set_current_tabpage(prev_tab)
+                    end
+                end
+
                 if
                     overseer_tab and vim.api.nvim_tabpage_is_valid(overseer_tab)
                 then
-                    if vim.api.nvim_get_current_tabpage() ~= overseer_tab then
-                        vim.api.nvim_set_current_tabpage(overseer_tab)
+                    if vim.api.nvim_get_current_tabpage() == overseer_tab then
+                        vim.cmd.tabclose()
+                        overseer_tab = nil
                         return
                     end
-                    vim.cmd.tabclose()
-                    overseer_tab = nil
+                    vim.api.nvim_set_current_tabpage(overseer_tab)
                     return
                 end
+
                 if
                     current_task
                     and (
@@ -144,6 +179,7 @@ return {
                     current_task:dispose(true)
                     current_task = nil
                 end
+
                 if not current_task or not current_task:is_running() then
                     local cmd = match.prefix_slock
                             and cwd:match('/slock$')
@@ -152,6 +188,7 @@ return {
                                 vim.split(match.cmd, ' ')
                             )
                         or match.cmd
+
                     current_task = overseer.new_task({
                         name = match.name,
                         cmd = cmd,
@@ -160,6 +197,7 @@ return {
                     })
                     current_task:start()
                 end
+
                 vim.cmd.tablast()
                 vim.cmd.tabnew()
                 local empty_buf = vim.api.nvim_get_current_buf()
