@@ -1,4 +1,5 @@
 return {
+    'neovim/nvim-lspconfig',
     {
         'folke/lazydev.nvim',
         ft = 'lua',
@@ -186,6 +187,7 @@ return {
     },
     {
         'saecki/live-rename.nvim',
+        event = 'LspAttach',
         config = function(_, opts)
             local live_rename = require('live-rename')
 

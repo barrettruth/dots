@@ -17,29 +17,13 @@ local clangd_settings = {
                 editsNearCursor = true,
             },
         },
-        offsetEncoding = { 'utf-8', 'utf-16' },
-    },
-    ---@param init_result ClangdInitializeResult
-    on_init = function(client, init_result)
-        if init_result.offsetEncoding then
-            client.offset_encoding = init_result.offsetEncoding
-        end
-    end,
-    root_markers = {
-        '.clangd',
-        '.clang-tidy',
-        '.clang-format',
-        'compile_commands.json',
-        'compile_flags.txt',
-        'configure.ac',
-        '.git',
     },
 }
 
 local project_settings = (config.lsp and config.lsp.clangd)
     and config.lsp.clangd
 
-require('config.utils').au('LspAttach', 'ClangdKeymap', {
+vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         if client and client.name == 'clangd' then
@@ -49,6 +33,7 @@ require('config.utils').au('LspAttach', 'ClangdKeymap', {
             )
         end
     end,
+    group = vim.api.nvim_creat_augroup('AClangdKeymap', { clear = true }),
 })
 
 return vim.tbl_extend('force', clangd_settings, project_settings or {})

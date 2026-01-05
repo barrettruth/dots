@@ -77,6 +77,8 @@ for _, server in ipairs({
     local ok, config = pcall(require, 'lsp.' .. server)
     if ok and config then
         vim.lsp.config(server, config)
+    else
+        vim.lsp.config(server, {})
     end
     vim.lsp.enable(server)
 end

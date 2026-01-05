@@ -2,4 +2,4 @@
 font = Berkeley Mono 15
 
 [experimental]
-per_monitor_dpi = false
+per_monitor_dpi = true

@@ -1,6 +1,7 @@
 return {
     settings = {
         Lua = {
+            codeLens = { enable = true },
             completion = { keywordSnippet = 'Disable' },
             diagnostics = { globals = { 'vim' } },
             hint = {

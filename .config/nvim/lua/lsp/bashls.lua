@@ -6,10 +6,4 @@ return {
             vim.diagnostic.enable(false, { bufnr = bufnr })
         end
     end,
-    filetypes = { 'bash', 'sh', 'zsh' },
-    settings = {
-        bashIde = {
-            globPattern = '*@(.sh|.inc|.bash|.command)',
-        },
-    },
 }
