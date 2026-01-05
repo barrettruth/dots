@@ -1,6 +1,6 @@
 local api, au = vim.api, vim.api.nvim_create_autocmd
 
-local aug = api.nvim_create_augroup('MyAugs', { clear = true })
+local aug = api.nvim_create_augroup('AAugs', { clear = true })
 
 au('BufEnter', {
     command = 'setl formatoptions-=cro spelloptions=camel,noplainbuffer',

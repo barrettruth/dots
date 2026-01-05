@@ -8,7 +8,8 @@ function M.setup(opts)
     vim.fn.serverstart(socket_path)
 end
 
-function M.reload()
+---@disable_fzf_lua_reload boolean?
+function M.reload(disable_fzf_lua_reload)
     local lines = vim.fn.readfile(vim.fn.expand('~/.config/fzf/themes/theme'))
     if not lines or #lines == 0 then
         return
@@ -23,7 +24,9 @@ function M.reload()
         return
     end
     M.opts.fzf_colors = colors
-    require('fzf-lua').setup(M.opts)
+    if not disable_fzf_lua_reload then
+        require('fzf-lua').setup(M.opts)
+    end
 end
 
 return M

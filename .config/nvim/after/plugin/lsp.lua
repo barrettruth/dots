@@ -55,7 +55,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
             }, { buffer = opts.buf, silent = false })
         end
     end,
-    group = vim.api.nvim_create_augroup('LspFormat', { clear = true }),
+    group = vim.api.nvim_create_augroup('ALspFormat', { clear = true }),
 })
 
 for _, server in ipairs({

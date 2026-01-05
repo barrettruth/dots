@@ -128,10 +128,6 @@ return {
                     end
 
                     local trigger = state.get_platform() or ''
-                    local aug = vim.api.nvim_create_augroup(
-                        'cp_fold_fix',
-                        { clear = true }
-                    )
                     vim.api.nvim_buf_set_lines(buf, 0, -1, false, { trigger })
                     vim.api.nvim_win_set_cursor(0, { 1, #trigger })
                     vim.cmd.startinsert({ bang = true })
@@ -147,10 +143,8 @@ return {
                                             vim.api.nvim_win_get_cursor(0)
                                         vim.cmd('normal! zx')
                                         vim.api.nvim_win_set_cursor(0, pos)
-                                        vim.api.nvim_del_augroup_by_id(aug)
                                     end)
                                 end,
-                                group = aug,
                             })
                             ls.expand()
                         end

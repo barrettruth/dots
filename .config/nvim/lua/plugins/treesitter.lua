@@ -22,6 +22,10 @@ return {
                         )
                     end
                 end,
+                group = vim.api.nvim_create_augroup(
+                    'ATreeSitter',
+                    { clear = true }
+                ),
             })
         end,
         keys = {

@@ -32,7 +32,6 @@ cmd open ${{
 }}
 
 cmd sopen ${{
-    hyprctl dispatch togglefloating
     for f in $fx; do
          setsid -f xdg-open "$f" >/dev/null 2>&1 &
     done

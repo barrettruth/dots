@@ -1,6 +1,8 @@
 return {
     'ibhagwan/fzf-lua',
-    init = function()
+    config = function(_, opts)
+        require('fzf-lua').setup(opts)
+
         vim.api.nvim_create_autocmd('FileType', {
             pattern = 'fzf',
             callback = function()
@@ -8,57 +10,15 @@ return {
                 vim.opt_local.relativenumber = false
             end,
             group = vim.api.nvim_create_augroup(
-                'ClearFzfColumn',
+                'AFzfHighlights',
                 { clear = true }
             ),
-        })
-    end,
-    config = function(_, opts)
-        local actions = require('fzf-lua.actions')
-
-        opts = vim.tbl_extend('force', opts, {
-            actions = {
-                files = {
-                    default = actions.file_edit,
-                    ['ctrl-l'] = function(...)
-                        actions.file_sel_to_ll(...)
-                        vim.cmd.lclose()
-                    end,
-                    ['ctrl-q'] = function(...)
-                        actions.file_sel_to_qf(...)
-                        vim.cmd.cclose()
-                    end,
-                    ['ctrl-h'] = actions.toggle_hidden,
-                    ['ctrl-v'] = actions.file_vsplit,
-                    ['ctrl-x'] = actions.file_split,
-                },
-            },
-            border = 'single',
-            git = {
-                files = {
-                    cmd = 'git ls-files --cached --others --exclude-standard',
-                },
-                worktrees = {
-                    fzf_args = (
-                        vim.env.FZF_DEFAULT_OPTS
-                            :gsub('%-%-bind=ctrl%-a:select%-all', '')
-                            :gsub('--color=[^%s]+', '')
-                    ),
-                },
-                branches = {
-                    fzf_args = (
-                        vim.env.FZF_DEFAULT_OPTS
-                            :gsub('%-%-bind=ctrl%-a:select%-all', '')
-                            :gsub('--color=[^%s]+', '')
-                    ),
-                },
-            },
         })
 
         local ok, fzf_reload = pcall(require, 'config.fzf_reload')
         if ok then
             fzf_reload.setup(opts)
-            fzf_reload.reload()
+            fzf_reload.reload(true)
         end
     end,
     keys = {
@@ -141,6 +101,48 @@ return {
             border = 'single',
             preview = {
                 hidden = 'hidden',
+            },
+        },
+        actions = {
+            files = {
+                default = function(...)
+                    require('fzf-lua.actions').file_edit(...)
+                end,
+                ['ctrl-l'] = function(...)
+                    local a = require('fzf-lua.actions')
+                    a.file_sel_to_ll(...)
+                    vim.cmd.lclose()
+                end,
+                ['ctrl-q'] = function(...)
+                    local a = require('fzf-lua.actions')
+                    a.file_sel_to_qf(...)
+                    vim.cmd.cclose()
+                end,
+                ['ctrl-h'] = function(...)
+                    require('fzf-lua.actions').toggle_hidden(...)
+                end,
+                ['ctrl-v'] = function(...)
+                    require('fzf-lua.actions').file_vsplit(...)
+                end,
+                ['ctrl-x'] = function(...)
+                    require('fzf-lua.actions').file_split(...)
+                end,
+            },
+        },
+        border = 'single',
+        git = {
+            files = {
+                cmd = 'git ls-files --cached --others --exclude-standard',
+            },
+            worktrees = {
+                fzf_args = (vim.env.FZF_DEFAULT_OPTS
+                    :gsub('%-%-bind=ctrl%-a:select%-all', '')
+                    :gsub('--color=[^%s]+', '')),
+            },
+            branches = {
+                fzf_args = (vim.env.FZF_DEFAULT_OPTS
+                    :gsub('%-%-bind=ctrl%-a:select%-all', '')
+                    :gsub('--color=[^%s]+', '')),
             },
         },
     },

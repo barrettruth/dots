@@ -1,2 +1,5 @@
 [global]
 font = Berkeley Mono 15
+
+[experimental]
+per_monitor_dpi = false

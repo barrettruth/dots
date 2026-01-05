@@ -18,28 +18,8 @@ return {
         config = function(_, opts)
             vim.o.pumheight = 15
             opts.completion.menu.max_height = vim.o.pumheight
+
             require('blink.cmp').setup(opts)
-            vim.schedule(function()
-                local blink = require('blink.cmp')
-
-                local orig_show = blink.show
-
-                blink.show = function(...)
-                    local mode = vim.api.nvim_get_mode().mode
-                    local bt = vim.api.nvim_buf_get_option(0, 'buftype')
-
-                    vim.notify(
-                        ('BLINK SHOW() called | mode=%s | buftype=%s\n%s'):format(
-                            mode,
-                            bt,
-                            debug.traceback()
-                        ),
-                        vim.log.levels.ERROR
-                    )
-
-                    return orig_show(...)
-                end
-            end)
         end,
         opts = {
             keymap = {
@@ -151,7 +131,13 @@ return {
                     formatting.prettierd.with({
                         env = {
                             XDG_RUNTIME_DIR = vim.env.XDG_RUNTIME_DIR
-                                or ((vim.env.XDG_DATA_HOME or (vim.env.HOME .. '/.local/share')) .. '/prettierd'),
+                                or (
+                                    (
+                                        vim.env.XDG_DATA_HOME
+                                        or (vim.env.HOME .. '/.local/share')
+                                    )
+                                    .. '/prettierd'
+                                ),
                         },
                         extra_args = function(params)
                             if params.ft == 'jsonc' then
@@ -201,8 +187,10 @@ return {
     {
         'saecki/live-rename.nvim',
         config = function(_, opts)
-            require('live-rename').setup(opts)
             local live_rename = require('live-rename')
+
+            live_rename.setup(opts)
+
             vim.api.nvim_create_autocmd('LspAttach', {
                 callback = function(o)
                     local clients = vim.lsp.get_clients({ buffer = o.buf })
@@ -216,7 +204,7 @@ return {
                     end
                 end,
                 group = vim.api.nvim_create_augroup(
-                    'LiveRenameMap',
+                    'ALiveRename',
                     { clear = true }
                 ),
             })
@@ -293,67 +281,54 @@ return {
     },
     {
         'pmizio/typescript-tools.nvim',
-        config = function()
-            require('typescript-tools').setup({
-                on_attach = function(_, bufnr)
-                    bmap(
-                        { 'n', 'gD', vim.cmd.TSToolsGoToSourceDefinition },
-                        { buffer = bufnr }
-                    )
+        opts = {
+            on_attach = function(_, bufnr)
+                bmap(
+                    { 'n', 'gD', vim.cmd.TSToolsGoToSourceDefinition },
+                    { buffer = bufnr }
+                )
+            end,
+            handlers = {
+                ['textDocument/publishDiagnostics'] = function(_, result, ctx)
+                    if not result.diagnostics then
+                        return
+                    end
+
+                    local idx = 1
+                    while idx <= #result.diagnostics do
+                        local entry = result.diagnostics[idx]
+
+                        local formatter =
+                            require('format-ts-errors')[entry.code]
+                        entry.message = formatter and formatter(entry.message)
+                            or entry.message
+
+                        if vim.tbl_contains({ 80001, 80006 }, entry.code) then
+                            table.remove(result.diagnostics, idx)
+                        else
+                            idx = idx + 1
+                        end
+                    end
+
+                    vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx)
                 end,
-                handlers = {
-                    ['textDocument/publishDiagnostics'] = function(
-                        _,
-                        result,
-                        ctx
-                    )
-                        if not result.diagnostics then
-                            return
-                        end
+            },
 
-                        local idx = 1
-                        while idx <= #result.diagnostics do
-                            local entry = result.diagnostics[idx]
-
-                            local formatter =
-                                require('format-ts-errors')[entry.code]
-                            entry.message = formatter
-                                    and formatter(entry.message)
-                                or entry.message
-
-                            if
-                                vim.tbl_contains({ 80001, 80006 }, entry.code)
-                            then
-                                table.remove(result.diagnostics, idx)
-                            else
-                                idx = idx + 1
-                            end
-                        end
-
-                        vim.lsp.diagnostic.on_publish_diagnostics(
-                            _,
-                            result,
-                            ctx
-                        )
-                    end,
+            settings = {
+                expose_as_code_action = 'all',
+                -- tsserver_path = vim.env.XDG_DATA_HOME .. '/pnpm/tsserver',
+                tsserver_file_preferences = {
+                    includeInlayarameterNameHints = 'all',
+                    includeInlayarameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
                 },
-
-                settings = {
-                    expose_as_code_action = 'all',
-                    -- tsserver_path = vim.env.XDG_DATA_HOME .. '/pnpm/tsserver',
-                    tsserver_file_preferences = {
-                        includeInlayarameterNameHints = 'all',
-                        includeInlayarameterNameHintsWhenArgumentMatchesName = false,
-                        includeInlayFunctionParameterTypeHints = true,
-                        includeInlayVariableTypeHints = true,
-                        includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                        includeInlayPropertyDeclarationTypeHints = true,
-                        includeInlayFunctionLikeReturnTypeHints = true,
-                        includeInlayEnumMemberValueHints = true,
-                    },
-                },
-            })
-        end,
+            },
+        },
         dependencies = {
             'nvim-lua/plenary.nvim',
         },

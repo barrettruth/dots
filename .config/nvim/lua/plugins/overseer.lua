@@ -67,6 +67,7 @@ return {
                 end
                 current_task = nil
             end,
+            group = vim.api.nvim_create_augroup('AOverseer', { clear = true }),
         })
     end,
     opts = {

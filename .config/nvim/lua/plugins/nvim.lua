@@ -32,7 +32,7 @@ return {
                     )
                 end,
                 group = vim.api.nvim_create_augroup(
-                    'MarkdownKeybind',
+                    'AMarkdownKeybind',
                     { clear = true }
                 ),
             })
@@ -54,28 +54,6 @@ return {
         build = 'make install_jsregexp',
         config = function()
             local ls = require('luasnip')
-
-            ls.setup({
-                region_check_events = 'InsertEnter',
-                delete_check_events = {
-                    'TextChanged',
-                    'TextChangedI',
-                    'InsertLeave',
-                },
-                ext_opts = {
-                    [require('luasnip.util.types').choiceNode] = {
-                        active = {
-                            virt_text = {
-                                {
-                                    ' <- ',
-                                    vim.wo.cursorline and 'CursorLine'
-                                        or 'Normal',
-                                },
-                            },
-                        },
-                    },
-                },
-            })
 
             ls.filetype_extend('htmldjango', { 'html' })
             ls.filetype_extend('markdown', { 'html' })
@@ -115,6 +93,26 @@ return {
                 '<c-k>',
                 '<cmd>lua if require("luasnip").choice_active() then require("luasnip").change_choice(1) end<cr>',
                 mode = 'i',
+            },
+        },
+        opts = {
+            region_check_events = 'InsertEnter',
+            delete_check_events = {
+                'TextChanged',
+                'TextChangedI',
+                'InsertLeave',
+            },
+            ext_opts = {
+                [require('luasnip.util.types').choiceNode] = {
+                    active = {
+                        virt_text = {
+                            {
+                                ' <- ',
+                                vim.wo.cursorline and 'CursorLine' or 'Normal',
+                            },
+                        },
+                    },
+                },
             },
         },
     },
@@ -261,11 +259,22 @@ return {
     },
     {
         'stevearc/oil.nvim',
-        event = function()
-            if vim.fn.isdirectory(vim.fn.expand('%:p')) == 1 then
-                return 'VimEnter'
-            end
+        config = function(_, opts)
+            require('oil').setup(opts)
+            vim.api.nvim_create_autocmd('BufEnter', {
+                callback = function()
+                    local ft = vim.bo.filetype
+                    if ft == '' then
+                        local path = vim.fn.expand('%:p')
+                        if vim.fn.isdirectory(path) == 1 then
+                            vim.cmd('Oil ' .. path)
+                        end
+                    end
+                end,
+                group = vim.api.nvim_create_augroup('AOil', { clear = true }),
+            })
         end,
+        event = 'VeryLazy',
         keys = {
             { '-', '<cmd>e .<cr>' },
             { '_', vim.cmd.Oil },
@@ -417,7 +426,7 @@ return {
                     )
                 end,
                 group = vim.api.nvim_create_augroup(
-                    'Midnight',
+                    'AColorScheme',
                     { clear = true }
                 ),
             })

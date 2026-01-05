@@ -18,6 +18,7 @@ function M.setup()
             vim.wo.foldmethod = 'expr'
             vim.wo.foldexpr = 'v:lua.require("config.fold").foldexpr()'
         end,
+        group = vim.api.nvim_create_augroup('AFold', { clear = true }),
     })
 end
 

@@ -7,7 +7,7 @@ local prev = nil
 return {
     {
         'tpope/vim-fugitive',
-        init = function()
+        config = function()
             vim.api.nvim_create_autocmd('TabClosed', {
                 callback = function(args)
                     local closed_tab = tonumber(args.match)
@@ -15,6 +15,10 @@ return {
                         git_tab = nil
                     end
                 end,
+                group = vim.api.nvim_create_augroup(
+                    'AFugitive',
+                    { clear = true }
+                ),
             })
         end,
         keys = {

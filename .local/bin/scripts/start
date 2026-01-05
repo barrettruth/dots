@@ -29,7 +29,7 @@ case "$de" in
 *hypr*)
   setup_wayland
   export XDG_CURRENT_DESKTOP=Hyprland
-  hyprland "$@"
+  start-hyprland "$@"
   ;;
 *dwm* | *spectr*)
   setup_xorg
