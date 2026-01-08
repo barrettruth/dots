@@ -52,7 +52,8 @@ o.showmode = false
 
 o.showtabline = 0
 
-o.spellfile = (vim.env.XDG_DATA_HOME or (vim.env.HOME .. '/.local/share')) .. '/nvim/spell.encoding.add'
+o.spellfile = (vim.env.XDG_DATA_HOME or (vim.env.HOME .. '/.local/share'))
+    .. '/nvim/spell.encoding.add'
 
 o.splitkeep = 'screen'
 
@@ -63,7 +64,8 @@ o.swapfile = false
 
 o.termguicolors = true
 
-o.undodir = vim.env.XDG_DATA_HOME .. '/nvim/undo'
+o.undodir = (vim.env.XDG_DATA_HOME or (vim.env.HOME .. '/.local/share'))
+    .. '/nvim/undo'
 o.undofile = true
 
 o.updatetime = 50

@@ -10,7 +10,7 @@ cmake-parse        0.6.13
 cmakelint          1.4.3
 cpplint            2.0.0
 filelock           3.20.0
-gps                3.27.2
+gps                3.27.3
 html5lib           1.1
 importlib_metadata 8.7.1
 isort              7.0.0
@@ -25,7 +25,7 @@ notebook           7.5.1
 orjson             3.11.5
 perf               0.1
 pikaur             1.33.1
-pillow             12.0.0
+pillow             12.1.0
 pip                25.3
 pycairo            1.29.0
 PyGObject          3.54.5

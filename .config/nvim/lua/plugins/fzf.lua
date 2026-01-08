@@ -135,12 +135,12 @@ return {
                 cmd = 'git ls-files --cached --others --exclude-standard',
             },
             worktrees = {
-                fzf_args = (vim.env.FZF_DEFAULT_OPTS
+                fzf_args = ((vim.env.FZF_DEFAULT_OPTS or '')
                     :gsub('%-%-bind=ctrl%-a:select%-all', '')
                     :gsub('--color=[^%s]+', '')),
             },
             branches = {
-                fzf_args = (vim.env.FZF_DEFAULT_OPTS
+                fzf_args = ((vim.env.FZF_DEFAULT_OPTS or '')
                     :gsub('%-%-bind=ctrl%-a:select%-all', '')
                     :gsub('--color=[^%s]+', '')),
             },
