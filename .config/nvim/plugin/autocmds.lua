@@ -19,6 +19,11 @@ au('VimEnter', {
     end,
 })
 
+au({ 'TermEnter' }, {
+    callback = vim.cmd.startinsert,
+    group = aug,
+})
+
 au({ 'TermOpen', 'BufWinEnter' }, {
     callback = function(args)
         if vim.bo[args.buf].buftype == 'terminal' then
