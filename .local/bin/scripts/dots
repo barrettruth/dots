@@ -22,6 +22,15 @@ copy_pkg_lists() {
   test -n "$CARGO_HOME" && test -d "$CARGO_HOME/bin" && ls "$CARGO_HOME/bin" > pkgs/cargo.txt
 }
 
+copy_systemd_configs() {
+  ensure_dir etc/systemd/system
+  cp /etc/systemd/system/*.service etc/systemd/system
+  cp /etc/systemd/system/*.timer etc/systemd/system
+
+  ensure_dir .config/systemd
+  cp -r "$XDG_CONFIG_HOME"/systemd .config
+}
+
 copy_xdg_configs() {
   test -n "$XDG_CONFIG_HOME" || abort "XDG_CONFIG_HOME not set"
 
@@ -35,7 +44,7 @@ copy_xdg_configs() {
   done
 
   test -d "$dest/zsh/pure" && rm -rf "$dest/zsh/pure"
-  for i in tmux/*; do
+  for i in .config/tmux/*; do
     if [ "$i" != 'tmux.conf' ]; then
       rm -rf "$i"
     fi
@@ -71,3 +80,4 @@ copy_etc_configs() {
 copy_pkg_lists
 copy_xdg_configs
 copy_etc_configs
+copy_systemd_configs

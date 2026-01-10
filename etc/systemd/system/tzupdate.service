@@ -1,0 +1,6 @@
+[Unit]
+Description=Update timezone automatically
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/tzupdate

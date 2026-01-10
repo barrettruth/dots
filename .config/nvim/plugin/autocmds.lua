@@ -19,16 +19,12 @@ au('VimEnter', {
     end,
 })
 
-au({ 'TermEnter' }, {
-    callback = vim.cmd.startinsert,
-    group = aug,
-})
-
 au({ 'TermOpen', 'BufWinEnter' }, {
     callback = function(args)
         if vim.bo[args.buf].buftype == 'terminal' then
             vim.opt_local.number = true
             vim.opt_local.relativenumber = true
+            vim.cmd.startinsert()
         end
     end,
     group = aug,
