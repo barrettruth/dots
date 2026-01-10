@@ -46,7 +46,8 @@
     "format": "volume:{volume}% │ ",
     "format-muted": "volume:{volume}% (muted) │ ",
     "interval": 2,
-    "signal": 1
+    "signal": 1,
+    "tooltip-format": "Audio Output: {desc}"
   },
 
   "network": {
@@ -54,13 +55,17 @@
     "format-ethernet": "eth:{interface} │ ",
     "format-disconnected": "wifi:off │ ",
     "interval": 10,
-    "signal": 1
+    "signal": 1,
+    "tooltip-format-wifi": "Signal: {signalStrength}%\nIP: {ipaddr}/{cidr}",
+    "tooltip-format-ethernet": "IP: {ipaddr}/{cidr}\nGateway: {gwaddr}",
+    "tooltip-format-disconnected": "Network: disconnected"
   },
 
   "backlight": {
     "device": "intel_backlight",
     "format": "brightness:{percent}% │ ",
-    "signal": 1
+    "signal": 1,
+    "tooltip": false
   },
 
   "battery": {
@@ -74,7 +79,7 @@
       "ultralow": 5
     },
     "events": {
-      "on-discharging-hi": "notify-send -u low 'battery 30%'",
+      "on-discharging-hi": "notify-send -u lw 'battery 30%'",
       "on-discharging-mid": "notify-send -u normal 'battery 20%'",
       "on-discharging-lo": "notify-send -u critical 'battery 10%'",
       "on-discharging-ultralo": "notify-send -u critical 'battery 5%'",
@@ -85,7 +90,8 @@
   },
 
   "clock": {
-    "format": "{:%R %d/%m/%Y} ",
-    "interval": 60
+    "format": "{:%H:%M:%S %d/%m/%Y} ",
+    "interval": 1,
+    "tooltip-format": "{:%A, %d %B %Y\nTimezone: %Z}"
   }
 }

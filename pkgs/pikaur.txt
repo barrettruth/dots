@@ -1,10 +1,10 @@
-basedpyright 1.36.2-1
+basedpyright 1.37.0-1
 clipmenu-git 6.2.0.r72.g46d45c9-1
 cmake-format 0.6.13-3
 cmake-lint 1.4.3-1
 electron39-bin 39.2.7-1
 flamegraph 1.0-2
-google-chrome 143.0.7499.169-1
+google-chrome 143.0.7499.192-1
 hadolint-bin 2.14.0-1
 neovim-nightly-bin 0.12.0+dev+1888+gc374d78095-1
 nvm-git 0.40.3.r0.g977563e-1
@@ -28,4 +28,4 @@ typstyle 0.14.0-1
 tzupdate 3.1.0-1
 ungoogled-chromium-bin 143.0.7499.169-1
 vesktop-bin 1.6.3-1
-zoom 6.7.0-1
+zoom 6.7.2-1

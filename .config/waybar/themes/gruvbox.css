@@ -16,3 +16,14 @@
   background: #665c54;
   color: #ebdbb2;
 }
+
+tooltip {
+  color: #ebdbb2;
+  background-color: #665c54;
+  text-shadow: none;
+}
+
+tooltip * {
+  color: #ebdbb2;
+  text-shadow: none;
+}
