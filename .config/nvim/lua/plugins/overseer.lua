@@ -5,34 +5,9 @@ local projects = {
         cmd = 'cmake -B build -DCMAKE_BUILD_TYPE=Debug && cmake --build build && ctest --test-dir build --output-on-failure',
     },
     {
-        name = 'theCourseForum2',
-        paths = { vim.env.HOME .. '/dev/theCourseForum2' },
-        cmd = 'docker compose up',
-    },
-    {
-        name = 'atlas',
-        paths = { vim.env.HOME .. '/dev/atlas' },
-        cmd = 'pnpm dev',
-    },
-    {
-        name = 'tinyground',
-        paths = { vim.env.HOME .. '/dev/tinyground' },
-        cmd = 'pnpm dev',
-    },
-    {
-        name = 'interview-prep',
-        paths = { vim.env.HOME .. '/dev/interview-prep' },
-        cmd = 'pnpm dev',
-    },
-    {
         name = 'neovim',
         paths = { vim.env.HOME .. '/dev/neovim' },
         cmd = 'make',
-    },
-    {
-        name = 'TestCppClient',
-        paths = { vim.env.HOME .. '/dev/TestCppClient' },
-        cmd = 'rm -f TestCppClientStatic && cmake -S . -B build/ && make && ./TestCppClientStatic',
     },
     {
         name = 'barrettruth.com',
@@ -40,9 +15,9 @@ local projects = {
         cmd = 'pnpm dev',
     },
     {
-        name = 'sl',
-        paths = { vim.env.HOME .. '/dev/sl' },
-        cmd = 'doas make clean install && make clean',
+        name = 'philipmruth.com',
+        paths = { vim.env.HOME .. '/dev/philipmruth.com' },
+        cmd = 'pnpm dev',
     },
 }
 

@@ -54,6 +54,7 @@
     "format-wifi": "wifi:{essid} │ ",
     "format-ethernet": "eth:{interface} │ ",
     "format-disconnected": "wifi:off │ ",
+    "format-disabled": "network:disabled",
     "interval": 10,
     "signal": 1,
     "tooltip-format-wifi": "Signal: {signalStrength}%\nIP: {ipaddr}/{cidr}",

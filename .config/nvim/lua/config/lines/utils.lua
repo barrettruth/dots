@@ -25,7 +25,8 @@ function M.format_components(components)
         then
             side[#side + 1] = ('%%#%s#[%s%s]%%#Normal#'):format(
                 highlight,
-                component.prefix and ('%s:'):format(component.prefix) or '',
+                component.prefix and ('%s:'):format(vorfn(component.prefix))
+                    or '',
                 vorfn(component.value)
             )
         end

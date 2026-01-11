@@ -2,6 +2,24 @@ local empty = require('config.utils').empty
 
 local M = {}
 
+local mode = {
+    prefix = 'mode',
+    highlight = 'white',
+    value = function()
+        local mode_to_text = {
+            n = 'NORMAL',
+            i = 'INSERT',
+            v = 'VISUAL',
+            V = 'V-LINE',
+            ['\22'] = 'V-BLOCK',
+            R = 'REPLACE',
+            c = 'COMMAND',
+        }
+
+        return mode_to_text[vim.fn.mode()]
+    end,
+}
+
 local file = {
     prefix = 'fp',
     highlight = 'blue',
@@ -65,7 +83,14 @@ local search = {
 }
 
 local filetype = {
-    prefix = 'ft',
+    prefix = function()
+        return empty(
+            vim.api.nvim_get_option_value(
+                'filetype',
+                { buf = vim.api.nvim_get_current_buf() }
+            )
+        ) and 'bt' or 'ft'
+    end,
     highlight = 'green',
     value = function()
         local ft = vim.api.nvim_get_option_value(
@@ -89,9 +114,10 @@ local lineinfo = {
 
 M.components = {
     left = {
-        [1] = git,
-        [2] = file,
-        [3] = modified,
+        [1] = mode,
+        [2] = git,
+        [3] = file,
+        [4] = modified,
         -- [4] = navic,
     },
     right = {
