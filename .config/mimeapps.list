@@ -1,0 +1,10 @@
+
+[Default Applications]
+x-scheme-handler/discord=vesktop.desktop
+image/jpeg=google-chrome-stable.desktop
+image/jpg=google-chrome-stable.desktop
+image/png=google-chrome-stable.desktop
+image/gif=google-chrome-stable.desktop
+image/bmp=google-chrome-stable.desktop
+image/webp=google-chrome-stable.desktop
+image/svg+xml=google-chrome-stable.desktop
