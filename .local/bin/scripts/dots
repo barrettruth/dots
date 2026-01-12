@@ -15,7 +15,7 @@ ensure_dir() {
 copy_pkg_lists() {
   ensure_dir pkgs
   command -v pacman >/dev/null 2>&1 && pacman -Qen > pkgs/pacman.txt || echo "pacman not found"
-  # command -v pikaur >/dev/null 2>&1 && pikaur -Qm > pkgs/pikaur.txt || echo "pikaur not found"
+  command -v pikaur >/dev/null 2>&1 && pikaur -Qm > pkgs/pikaur.txt || echo "pikaur not found"
   command -v pnpm >/dev/null 2>&1 && pnpm -g list | tail -n +6 > pkgs/pnpm.txt || echo "pnpm not found"
   command -v pip >/dev/null 2>&1 && pip list --not-required > pkgs/pip.txt || echo "pip not found"
   test -n "$GOPATH" && test -d "$GOPATH/bin" && ls "$GOPATH/bin" > pkgs/go.txt
