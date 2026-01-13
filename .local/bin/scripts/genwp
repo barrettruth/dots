@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+
+import os
+import subprocess
+
+from PIL import Image, ImageDraw
+
+HOME = os.environ["HOME"]
+DIR = f"{HOME}/img/screen"
+FILE = f"{DIR}/wallpaper.jpg"
+os.makedirs(DIR, exist_ok=True)
+
+output = "1920x1080"
+
+if "WAYLAND_DISPLAY" in os.environ:
+    if os.environ.get("XDG_CURRENT_DESKTOP", "") == "Hyprland":
+        output = (
+            subprocess.check_output(
+                "hyprctl monitors -j | jq -r '.[] | select(.focused==true) | .width, .height' | paste -sd x -",
+                shell=True,
+            )
+            .decode()
+            .strip()
+        )
+    elif os.environ.get("XDG_CURRENT_DESKTOP", "") == "sway":
+        output = (
+            subprocess.check_output(
+                "swaymsg -t get_outputs -r | jq -r '.[] | select(.active==true) | .current_mode.width,.current_mode.height' | paste -sd x -",
+                shell=True,
+            )
+            .decode()
+            .strip()
+        )
+else:
+    output = (
+        subprocess.check_output("xrandr | grep '*' | awk '{print $1}'", shell=True)
+        .decode()
+        .strip()
+    )
+
+W, H = map(int, output.split("x"))
+
+colors = [
+    "#aa0000",
+    "#ff3333",
+    "#ff7777",
+    "#ffbb55",
+    "#ffcc88",
+    "#ff88ff",
+    "#aaaaff",
+    "#77ddbb",
+    "#77ff77",
+    "#cccccc",
+]
+
+colors.reverse()
+
+img = Image.new("RGB", (W, H), "white")
+draw = ImageDraw.Draw(img)
+
+num_bars = len(colors)
+
+for i, color in enumerate(reversed(colors)):
+    top = round(i * H / num_bars)
+    bottom = round((i + 1) * H / num_bars)
+    draw.rectangle([0, top, W, bottom], fill=color)
+
+img.save(FILE, quality=95)

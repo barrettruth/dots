@@ -7,8 +7,8 @@ import subprocess
 from PIL import Image, ImageDraw
 
 HOME = os.environ["HOME"]
-DIR = f"{HOME}/img/wp"
-FILE = f"{DIR}/random.jpg"
+DIR = f"{HOME}/img/screen"
+FILE = f"{DIR}/lock.jpg"
 os.makedirs(DIR, exist_ok=True)
 
 output = "1920x1080"

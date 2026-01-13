@@ -55,7 +55,7 @@ brightness)
   ;;
 volume)
   SINK="@DEFAULT_SINK@"
-  STEP=5
+  STEP=2
   get_vol() { pactl get-sink-volume "$SINK" | awk 'NR==1{print $5+0}'; }
 
   case "$1" in
