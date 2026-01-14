@@ -64,6 +64,7 @@ BinPackParameters: false]]
 
 return {
     'barrett-ruth/cp.nvim',
+    dir = '~/dev/cp.nvim',
     cmd = 'CP',
     keys = {
         { '<leader>pe', '<cmd>CP edit<cr>' },

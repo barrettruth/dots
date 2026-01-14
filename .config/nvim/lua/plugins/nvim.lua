@@ -417,6 +417,7 @@ return {
     },
     {
         'barrett-ruth/midnight.nvim',
+        dir = '~/dev/midnight.nvim',
         init = function()
             vim.api.nvim_create_autocmd({ 'OptionSet' }, {
                 pattern = 'background',

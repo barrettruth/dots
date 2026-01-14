@@ -4,7 +4,8 @@ local M = {}
 
 local mode = {
     prefix = 'mode',
-    highlight = 'white',
+    highlight = 'Normal',
+    -- highlight = 'white',
     value = function()
         local mode_to_text = {
             n = 'NORMAL',
@@ -22,7 +23,8 @@ local mode = {
 
 local file = {
     prefix = 'fp',
-    highlight = 'blue',
+    highlight = 'Normal',
+    -- highlight = 'blue',
     value = function()
         return vim.fn.expand('%:~')
         -- return vim.fn.pathshorten(vim.fn.expand('%:~'))
@@ -35,7 +37,8 @@ local file = {
 
 local git = {
     prefix = 'git',
-    highlight = 'magenta',
+    highlight = 'Normal',
+    -- highlight = 'magenta',
     value = function()
         return vim.b.gitsigns_head
     end,
@@ -91,7 +94,8 @@ local filetype = {
             )
         ) and 'bt' or 'ft'
     end,
-    highlight = 'green',
+    highlight = 'Normal',
+    -- highlight = 'green',
     value = function()
         local ft = vim.api.nvim_get_option_value(
             'filetype',
@@ -108,7 +112,8 @@ local filetype = {
 
 local lineinfo = {
     prefix = 'lnnr',
-    highlight = 'yellow',
+    highlight = 'Normal',
+    -- highlight = 'yellow',
     value = '%c:%l/%L',
 }
 
