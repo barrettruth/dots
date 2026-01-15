@@ -1,8 +1,0 @@
-theme
-tmux
-!tmux/tmux.confa
-zsh
-!zsh/.zaliases
-!zsh/.zprofile
-!zsh/.zshrc
-!zsh/.zshenv

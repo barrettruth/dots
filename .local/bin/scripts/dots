@@ -44,8 +44,9 @@ copy_xdg_configs() {
   done
 
   test -d "$dest/zsh/pure" && rm -rf "$dest/zsh/pure"
+  test -f "$dest/zsh/.zcompdump" && rm -f "$dest/zsh/.zcompdump"
   for i in .config/tmux/*; do
-    if [ "$i" != 'tmux.conf' ]; then
+    if [ "${i##*/}" != 'tmux.conf' ] && [ "${i##*/}" != 'themes' ]; then
       rm -rf "$i"
     fi
   done

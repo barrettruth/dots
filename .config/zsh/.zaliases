@@ -1,0 +1,39 @@
+#!/usr/bin/env zsh
+
+alias ls='eza'
+alias l='ls --color=auto --group-directories-first'
+alias ll='l -alF'
+alias la='ll -R'
+alias lss='less --use-color --color=d+b --color=P+c --color=u+g'
+alias pe='printenv'
+
+alias ds='doas'
+alias pm='pacman'
+
+alias g='git'
+alias nv='nvim'
+
+mkcd() {
+    [ "$1" ] || return
+    mkdir -p "$@"
+    cd "$@"
+}
+
+j() {
+    case "$1" in
+        -) cd - >/dev/null && return;;
+        '') cd ~;;
+        dev) cd ~/dev;;
+        doc) cd ~/doc;;
+        dl) cd ~/dl;;
+        sl | notes | dots | cavauto) cd ~/dev/"$1";;
+        site) cd ~/dev/barrettruth.com;;
+        cp) cd ~/dev/competitive-programming;;
+        trb) cd ~/dev/trb-capital-management;;
+        lz) cd ~/.local/share/nvim/lazy;;
+        scr) cd "$SCRIPTS";;
+        cf) cd "$XDG_CONFIG_HOME";;
+        nvim | lf | tmux | zsh | X11) cd "$XDG_CONFIG_HOME/$1";;
+        *) cd "$@";;
+    esac
+}
