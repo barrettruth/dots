@@ -7,18 +7,6 @@ au('BufEnter', {
     group = aug,
 })
 
-au('VimEnter', {
-    once = true,
-    callback = function()
-        _G.main_tab = vim.api.nvim_get_current_tabpage()
-        vim.keymap.set('n', '<leader>c', function()
-            if _G.main_tab and vim.api.nvim_tabpage_is_valid(_G.main_tab) then
-                vim.api.nvim_set_current_tabpage(_G.main_tab)
-            end
-        end, { desc = 'Go to main tab' })
-    end,
-})
-
 au({ 'TermOpen', 'BufWinEnter' }, {
     callback = function(args)
         if vim.bo[args.buf].buftype == 'terminal' then

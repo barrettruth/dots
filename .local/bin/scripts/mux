@@ -1,12 +1,27 @@
 #!/bin/sh
 
+spawn_or_focus() {
+  name="$1"
+  cmd="$2"
+
+  if tmux list-windows -F '#{window_name}' | grep -Fx "$name" >/dev/null; then
+    tmux select-window -t "${name}"
+  else
+    if [ -n "$cmd" ]; then
+      tmux new-window -c '#{pane_current_path}' -n "${name}" "$cmd"
+    else
+      tmux new-window -c '#{pane_current_path}' -n "${name}"
+    fi
+  fi
+}
+
 case "$1" in
 '')
   if ! tmux list-sessions >/dev/null 2>&1; then
     tmux new-session -d
     tmux run-shell "$XDG_CONFIG_HOME/tmux/tmux-resurrect/scripts/restore.sh"
   fi
-  tmux attach\; source-file "$XDG_CONFIG_HOME/tmux/tmux.conf" || tmux
+  tmux attach \; source-file "$XDG_CONFIG_HOME/tmux/tmux.conf" || tmux
   ;;
 bar)
   [ "$2" ] || exit
@@ -30,9 +45,26 @@ bar)
     bar_content="$bar_content$key:$sess "
     i=$((i + 1))
   done
-  echo "$mouse  $bar_content"
+  echo "$mouse $bar_content"
   ;;
 switch)
   mux-switch "$2"
+  ;;
+code)
+  spawn_or_focus code 'nvim -c "lua require([[config.tmux]]).run([[code]])"'
+  ;;
+git)
+  pane_path=$(tmux display-message -p '#{pane_current_path}')
+  if ! git -C "$pane_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    tmux display-message "Not a git repository"
+  else
+    spawn_or_focus git 'nvim -c "lua require([[config.tmux]]).run([[git]])"'
+  fi
+  ;;
+run)
+  spawn_or_focus run 'nvim -c "lua require([[config.tmux]]).run([[run]])"'
+  ;;
+term)
+  spawn_or_focus term
   ;;
 esac
