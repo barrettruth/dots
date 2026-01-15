@@ -32,10 +32,6 @@ bar)
   done
   echo "$mouse  $bar_content"
   ;;
-run)
-  [ "$(tmux lsw -F '#W' | rg "$1")" ] && tmux send -t "$1" 'C-c' \; killw -t "$1"
-  tmux neww -c '#{pane_current_path}' -n "$1" \; send 'C-l' "mux-$1 $2" 'enter'
-  ;;
 switch)
   mux-switch "$2"
   ;;

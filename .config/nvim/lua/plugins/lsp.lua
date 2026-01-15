@@ -119,6 +119,7 @@ return {
                         end,
                     }),
                     diagnostics.selene,
+                    diagnostics.vacuum,
                     diagnostics.zsh,
 
                     formatting.black,
