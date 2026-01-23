@@ -32,7 +32,7 @@ j() {
         trb) cd ~/dev/trb-capital-management;;
         lz) cd ~/.local/share/nvim/lazy;;
         scr) cd "$SCRIPTS";;
-        cf) cd "$XDG_CONFIG_HOME";;
+        config) cd "$XDG_CONFIG_HOME";;
         nvim | lf | tmux | zsh | X11) cd "$XDG_CONFIG_HOME/$1";;
         *) cd "$@";;
     esac

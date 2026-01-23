@@ -11,13 +11,11 @@ nvm-git 0.40.3.r0.g977563e-1
 otf-san-francisco 1:2-2
 otf-stix 2.13.b171-2
 pikaur 1.33.1-1
-pipes.sh 1.3.0-1
 pistol-git 0.5.3.r11.gfe13fc4-1
 qt5-remoteobjects 5.15.18-1
 quarto-cli-bin 1.8.26-1
 rgb.txt 1.0-1
 shellcheck-bin 0.11.0-1
-sioyek 2.0.0-7
 slack-desktop 4.47.69-1
 spectrwm 3.7.0-1
 teams 1.5.00.23861-1

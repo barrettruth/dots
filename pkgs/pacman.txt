@@ -23,7 +23,6 @@ docker-compose 5.0.1-1
 dunst 1.13.0-1
 efibootmgr 18-3
 eza 0.23.4-1
-fastfetch 2.57.1-1
 fd 10.3.0-1
 feh 3.11.2-2
 ffmpegthumbnailer 2.3.0-1

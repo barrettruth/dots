@@ -77,7 +77,8 @@ copy_etc_configs() {
   test -f /etc/xdg/reflector/reflector.conf && cp /etc/xdg/reflector/reflector.conf etc/xdg/reflector/reflector.conf || echo "Missing reflector.conf"
 
   test -n "$XDG_DATA_HOME/applications" || abort "XDG_DATA_HOME not set"
-  test -d "$XDG_DATA_HOME"/applications && ensure_dir "$dest" && test cp "$XDG_DATA_HOME/applications/"*.desktop "$XDG_DATA_HOME/applications/"*.list "$dest" 2>/dev/null
+  dest="${XDG_DATA_HOME#"$HOME"/}/applications"
+  test -d "$XDG_DATA_HOME"/applications && ensure_dir "$dest" && cp "$XDG_DATA_HOME/applications/"*.desktop "$XDG_DATA_HOME/applications/"*.list "$dest" 2>/dev/null
 }
 
 copy_pkg_lists

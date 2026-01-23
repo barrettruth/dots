@@ -16,13 +16,6 @@ spawn_or_focus() {
 }
 
 case "$1" in
-'')
-  if ! tmux list-sessions >/dev/null 2>&1; then
-    tmux new-session -d
-    tmux run-shell "$XDG_CONFIG_HOME/tmux/tmux-resurrect/scripts/restore.sh"
-  fi
-  tmux attach \; source-file "$XDG_CONFIG_HOME/tmux/tmux.conf" || tmux
-  ;;
 bar)
   [ "$2" ] || exit
   mouse=""
