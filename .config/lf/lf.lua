@@ -231,7 +231,7 @@ end
 ---@param preview_line_count number
 function _G.lf.preview(filepath, preview_line_count)
 	vim.cmd.edit(filepath)
-	vim.cmd.colorscheme("midnight")
+	vim.cmd.colorscheme(vim.env.THEME)
 
 	local buf = vim.api.nvim_get_current_buf()
 	local lines = vim.api.nvim_buf_get_lines(buf, 0, preview_line_count, false)

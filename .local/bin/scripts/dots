@@ -45,11 +45,7 @@ copy_xdg_configs() {
 
   test -d "$dest/zsh/pure" && rm -rf "$dest/zsh/pure"
   test -f "$dest/zsh/.zcompdump" && rm -f "$dest/zsh/.zcompdump"
-  for i in .config/tmux/*; do
-    if [ "${i##*/}" != 'tmux.conf' ] && [ "${i##*/}" != 'themes' ]; then
-      rm -rf "$i"
-    fi
-  done
+  rm -rf "$dest/tmux/plugins"
 
   test -d "$XDG_CONFIG_HOME/luarocks" && ensure_dir "$dest/luarocks" && cp "$XDG_CONFIG_HOME/luarocks/"* "$dest/luarocks" 2>/dev/null
   test -f "$HOME/.zshenv" && cp -f "$HOME/.zshenv" "$dest/zsh"

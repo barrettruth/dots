@@ -57,6 +57,7 @@ export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 export BOTO_CONFIG="$XDG_CONFIG_HOME"/boto/config
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME"/claude
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export GRADLE_USER_HOME="$XDG_CONFIG_HOME"/gradle
@@ -78,6 +79,7 @@ export TEXMFVAR=$XDG_CACHE_HOME/texlive/texmf-var
 export TEXMFCONFIG=$XDG_CONFIG_HOME/texlive/texmf-config
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export JUPYTER_PLATFORM_DIRS=1
+export PNPM_NO_UPDATE_NOTIFIER=true
 
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     if [[ "$USE_WAYLAND" ]]; then
