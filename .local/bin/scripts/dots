@@ -37,7 +37,7 @@ copy_xdg_configs() {
   dest="${XDG_CONFIG_HOME#"$HOME"/}"
   ensure_dir "$dest"
 
-  for folder in lf git npm nvim python rg tmux yamllint zsh mutt dunst sioyek ghostty fzf task rofi sway spectrwm X11 waybar hypr; do
+  for folder in lf git npm nvim python rg tmux yamllint zsh mutt dunst ghostty fzf task rofi sway spectrwm X11 waybar hypr; do
     test -d "$XDG_CONFIG_HOME/$folder" || continue
     test -d "$dest/$folder" && rm -rf "${dest:?}/$folder"
     cp -rf "$XDG_CONFIG_HOME/$folder" "$dest/$folder" || echo "Failed to copy $folder"

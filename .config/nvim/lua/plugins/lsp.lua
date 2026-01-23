@@ -362,7 +362,7 @@ return {
         ft = 'typst',
         version = '1.*',
         opts = {
-            open_cmd = ('%s %%s'):format(vim.env.BROWSER),
+            open_cmd = ('%s %%s --new-window'):format(vim.env.BROWSER),
             invert_colors = 'auto',
             dependencies_bin = {
                 tinymist = vim.fn.exepath('tinymist'),

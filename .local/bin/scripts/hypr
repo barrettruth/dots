@@ -37,14 +37,15 @@ exit)
   exit 0
   ;;
 brightness)
+  BRIGHT_STEP=5
   max_brightness="$(brightnessctl max)"
   case "$1" in
   up)
-    brightnessctl set 5%+
+    brightnessctl set "$BRIGHT_STEP"%+
     notify-send -u low -t 2500 -r 5555 "brightness $(brightnessctl get | awk -v max="$max_brightness" '{printf "%d%%", $1*100/max}')"
     ;;
   down)
-    brightnessctl set 5%-
+    brightnessctl set "$BRIGHT_STEP"%-
     notify-send -u low -t 2500 -r 5555 "brightness $(brightnessctl get | awk -v max="$max_brightness" '{printf "%d%%", $1*100/max}')"
     ;;
   *)
@@ -55,19 +56,19 @@ brightness)
   ;;
 volume)
   SINK="@DEFAULT_SINK@"
-  STEP=2
+  VOL_STEP=5
   get_vol() { pactl get-sink-volume "$SINK" | awk 'NR==1{print $5+0}'; }
 
   case "$1" in
   up)
     vol=$(get_vol)
-    [ "$vol" -lt 100 ] && vol=$((vol + STEP))
+    [ "$vol" -lt 100 ] && vol=$((vol + VOL_STEP))
     [ "$vol" -gt 100 ] && vol=100
     pactl set-sink-volume "$SINK" "${vol}%"
     ;;
   down)
     vol=$(get_vol)
-    vol=$((vol - STEP))
+    vol=$((vol - VOL_STEP))
     [ "$vol" -lt 0 ] && vol=0
     pactl set-sink-volume "$SINK" "${vol}%"
     ;;
@@ -165,12 +166,14 @@ spawnfocus)
       ;;
     esac
   done
+
   APP="$1"
   [ -z "$APP" ] && {
     echo 'Specify an app'
     exit 1
   }
   shift
+
   case "$APP" in
   google-chrome | google-chrome-stable) CLASS="google-chrome" ;;
   chromium | ungoogled-chromium) CLASS="Chromium" ;;
@@ -194,21 +197,37 @@ spawnfocus)
       ((.class // "") | ascii_downcase | contains($class | ascii_downcase))
     ) | "\(.class)\t\(.title)\t\(.address)"
   ')
+
   WIN_COUNT=$(echo "$WIN_ADDRS" | grep -c .)
+
   if [ "$WIN_COUNT" -eq 0 ]; then
     WIN_ADDR=""
   elif [ "$WIN_COUNT" -eq 1 ]; then
     WIN_ADDR=$(echo "$WIN_ADDRS" | awk -F'\t' '{print $3}')
   elif [ "$WIN_COUNT" -gt 1 ]; then
     SELECTED=$(echo "$WIN_ADDRS" | awk -F'\t' '{print $1 ": " $2 "\t" $3}' | rofi -dmenu -i -p "select window")
+
     if [ -z "$SELECTED" ]; then
       exit 0
     fi
+
     WIN_ADDR=$(echo "$SELECTED" | awk -F'\t' '{print $2}')
   fi
   if [ -n "$WIN_ADDR" ]; then
-    WIN_WS=$(hyprctl clients -j | jq -r --arg addr "$WIN_ADDR" '.[] | select(.address == $addr) | .workspace.id')
-    hyprctl dispatch workspace "$WIN_WS"
+    if [ -n "$WS" ]; then
+      WIN_WS=$(hyprctl clients -j | jq -r --arg addr "$WIN_ADDR" '.[] | select(.address == $addr) | .workspace.id')
+
+      if [ "$WIN_WS" != "$WS" ]; then
+        hyprctl dispatch movetoworkspacesilent "$WS,address:$WIN_ADDR"
+      fi
+
+      hyprctl dispatch workspace "$WS"
+    else
+      WIN_WS=$(hyprctl clients -j | jq -r --arg addr "$WIN_ADDR" '.[] | select(.address == $addr) | .workspace.id')
+
+      hyprctl dispatch workspace "$WIN_WS"
+    fi
+
     hyprctl dispatch focuswindow "address:$WIN_ADDR"
   else
     EXISTING_HEX=$(hyprctl -j clients 2>/dev/null | jq -r --arg class "$CLASS" '
@@ -218,13 +237,17 @@ spawnfocus)
         ((.class // "") | ascii_downcase | contains($class | ascii_downcase))
       ) | .address | ltrimstr("0x")
     ' | tr '\n' ' ')
+
     if [ -n "$WS" ]; then
-      hyprctl dispatch exec "[workspace $WS silent] $APP $*"
-    elif [ $# -eq 0 ]; then
+      hyprctl dispatch workspace "$WS"
+    fi
+
+    if [ $# -eq 0 ]; then
       "$APP" &
     else
       "$APP" "$@" &
     fi
+
     socat -u UNIX-CONNECT:"$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - | while read -r line; do
       case "$line" in
       openwindow*)
@@ -238,6 +261,9 @@ spawnfocus)
           *" $window_id "*) ;;
           *)
             addr="0x$window_id"
+            if [ -n "$WS" ]; then
+              hyprctl dispatch movetoworkspacesilent "$WS,address:$addr"
+            fi
             hyprctl dispatch focuswindow "address:$addr"
             break
             ;;

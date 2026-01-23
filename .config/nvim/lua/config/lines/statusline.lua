@@ -4,7 +4,6 @@ local M = {}
 
 local mode = {
     prefix = 'mode',
-    highlight = 'Normal',
     -- highlight = 'white',
     value = function()
         local mode_to_text = {
@@ -23,7 +22,6 @@ local mode = {
 
 local file = {
     prefix = 'fp',
-    highlight = 'Normal',
     -- highlight = 'blue',
     value = function()
         return vim.fn.expand('%:~')
@@ -37,7 +35,6 @@ local file = {
 
 local git = {
     prefix = 'git',
-    highlight = 'Normal',
     -- highlight = 'magenta',
     value = function()
         return vim.b.gitsigns_head
@@ -68,7 +65,7 @@ local search = {
         local count = vim.fn.searchcount({ maxcount = 999 })
 
         return string.format(
-            '%s [%s/%d]',
+            '%s (%s/%d)',
             vim.fn.getreg('/'),
             count.current,
             count.total
@@ -94,7 +91,6 @@ local filetype = {
             )
         ) and 'bt' or 'ft'
     end,
-    highlight = 'Normal',
     -- highlight = 'green',
     value = function()
         local ft = vim.api.nvim_get_option_value(
@@ -112,7 +108,6 @@ local filetype = {
 
 local lineinfo = {
     prefix = 'lnnr',
-    highlight = 'Normal',
     -- highlight = 'yellow',
     value = '%c:%l/%L',
 }
@@ -122,8 +117,8 @@ M.components = {
         [1] = mode,
         [2] = git,
         [3] = file,
-        [4] = modified,
-        -- [4] = navic,
+        [4] = navic,
+        [5] = modified,
     },
     right = {
         [1] = search,

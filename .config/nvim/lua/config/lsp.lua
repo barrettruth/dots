@@ -81,7 +81,7 @@ end
 
 local FORMAT_LSPS = { 'null-ls', 'clangd', 'tinymist', 'ruff' }
 
-function M.lsp_format(opts)
+function M.format(opts)
     local format_opts = vim.tbl_extend('force', opts or {}, {
         filter = function(c)
             if c.name == 'typescript-tools' then

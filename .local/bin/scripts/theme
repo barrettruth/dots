@@ -83,8 +83,6 @@ Linux)
   }
 
   test -d "$XDG_CONFIG_HOME/rofi/themes" && ln -sf "$XDG_CONFIG_HOME/rofi/themes/$theme.rasi" "$XDG_CONFIG_HOME/rofi/themes/theme.rasi"
-
-  test -f "$XDG_CONFIG_HOME/sioyek/themes/$theme.config" && ln -sf "$XDG_CONFIG_HOME/sioyek/themes/$theme.config" "$XDG_CONFIG_HOME/sioyek/themes/theme.config"
   ;;
 Darwin)
   case "$theme" in

@@ -50,7 +50,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
             bmap({
                 modes,
                 'gF',
-                lsp.lsp_format,
+                lsp.format,
             }, { buffer = opts.buf, silent = false })
         end
     end,

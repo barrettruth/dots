@@ -106,10 +106,10 @@ return {
                     require('cp.helpers').clearcol(buf)
                 end,
                 before_run = function(_)
-                    require('config.lsp').lsp_format({ async = true })
+                    require('config.lsp').format({ async = true })
                 end,
                 before_debug = function(_)
-                    require('config.lsp').lsp_format({ async = true })
+                    require('config.lsp').format({ async = true })
                 end,
                 setup_code = function(state)
                     vim.opt_local.winbar = ''

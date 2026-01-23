@@ -23,17 +23,16 @@ function M.format_components(components)
             vorfn(component.condition) ~= false
             and not utils.empty(vorfn(component.value))
         then
-            side[#side + 1] = ('%%#%s#[%s%s]%%#Normal#'):format(
+            side[#side + 1] = ('%%#%s#%s%%#%s#'):format(
                 highlight,
-                component.prefix and ('%s:'):format(vorfn(component.prefix))
-                    or '',
-                vorfn(component.value)
+                vorfn(component.value),
+                component.highlight or 'Normal'
             )
         end
     end
 
     if #side > 0 then
-        return (' %s '):format(table.concat(side, ' '))
+        return (' %s '):format(table.concat(side, ' │ '))
     end
 
     return ''
