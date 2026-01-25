@@ -24,7 +24,6 @@ ttf-joypixels 9.0.0-1
 ttf-times-new-roman 2.0-3
 ttf-vista-fonts 1-11
 tzupdate 3.1.0-1
-ungoogled-chromium-bin 143.0.7499.169-1
 vacuum 0.23.2-1
 vesktop-bin 1.6.3-1
 zoom 6.7.2-1

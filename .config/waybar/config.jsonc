@@ -77,7 +77,7 @@
       "hi": 30,
       "mid": 20,
       "lo": 10,
-      "ultralow": 5
+      "ultralo": 5
     },
     "events": {
       "on-discharging-hi": "notify-send -u lw 'battery 30%'",

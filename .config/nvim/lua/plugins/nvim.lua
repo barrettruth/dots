@@ -41,11 +41,10 @@ return {
     {
         'lervag/vimtex',
         init = function()
-            vim.g.vimtex_view_method = 'sioyek'
+            vim.g.vimtex_view_method = 'general'
             vim.g.vimtex_compiler_method = 'latexmk'
             vim.g.vimtex_callback_progpath = '/usr/bin/nvim'
-            vim.g.vimtex_view_sioyek_exe = '/usr/bin/sioyek'
-            -- vim.g.vimtex_quickfix_mode = 0
+            vim.g.vimtex_quickfix_mode = 0
         end,
         ft = { 'plaintext', 'tex' },
     },
@@ -121,16 +120,6 @@ return {
         config = true,
         keys = { { '<leader>Ct', '<cmd>CloakToggle<cr>' } },
         event = 'BufReadPre .env*',
-    },
-    {
-        'lervag/vimtex',
-        init = function()
-            vim.g.vimtex_view_method = 'sioyek'
-            vim.g.vimtex_callback_progpath = '/usr/bin/nvim'
-            vim.g.vimtex_view_sioyek_exe = 'sioyek'
-            vim.g.vimtex_quickfix_mode = 0
-        end,
-        ft = { 'plaintext', 'tex' },
     },
     {
         'maxmellon/vim-jsx-pretty',
@@ -407,7 +396,12 @@ return {
         'saghen/blink.indent',
         opts = {
             blocked = {
-                filetypes = { include_defaults = true, 'fugitive', 'markdown' },
+                filetypes = {
+                    include_defaults = true,
+                    'fugitive',
+                    'markdown',
+                    'typst',
+                },
             },
             static = {
                 char = '│',
