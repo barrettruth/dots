@@ -27,7 +27,7 @@ local projects = {
 local current_task = nil
 
 local actions = {
-    code = function()
+    nvim = function()
         local ok, oil = pcall(require, 'oil')
 
         if not ok then
@@ -35,7 +35,7 @@ local actions = {
         end
 
         oil.open()
-end,
+    end,
     git = function()
         vim.cmd.Git()
         vim.cmd.only()

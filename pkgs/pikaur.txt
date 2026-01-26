@@ -8,6 +8,7 @@ google-chrome 143.0.7499.192-1
 hadolint-bin 2.14.0-1
 neovim-nightly-bin 0.12.0+dev+1888+gc374d78095-1
 nvm-git 0.40.3.r0.g977563e-1
+opencode-bin 1.1.36-1
 otf-san-francisco 1:2-2
 otf-stix 2.13.b171-2
 pikaur 1.33.1-1

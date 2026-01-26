@@ -43,6 +43,8 @@ copy_xdg_configs() {
     cp -rf "$XDG_CONFIG_HOME/$folder" "$dest/$folder" || echo "Failed to copy $folder"
   done
 
+  test -f "$XDG_CONFIG_HOME"/claude/CLAUDE.md && mkdir -p "$dest/claude" && cp -f "$XDG_CONFIG_HOME"/claude/CLAUDE.md "$dest/claude"
+
   test -d "$dest/zsh/pure" && rm -rf "$dest/zsh/pure"
   test -f "$dest/zsh/.zcompdump" && rm -f "$dest/zsh/.zcompdump"
   rm -rf "$dest/tmux/plugins"

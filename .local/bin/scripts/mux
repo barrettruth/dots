@@ -43,8 +43,11 @@ bar)
 switch)
   mux-switch "$2"
   ;;
-code)
-  spawn_or_focus code 'nvim -c "lua require([[config.tmux]]).run([[code]])"'
+claude)
+  spawn_or_focus claude 'claude --chrome'
+  ;;
+nvim)
+  spawn_or_focus nvim 'nvim -c "lua require([[config.tmux]]).run([[nvim]])"'
   ;;
 git)
   pane_path=$(tmux display-message -p '#{pane_current_path}')

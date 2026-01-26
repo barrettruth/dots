@@ -26,6 +26,7 @@ eza 0.23.4-1
 fd 10.3.0-1
 feh 3.11.2-2
 ffmpegthumbnailer 2.3.0-1
+firefox 147.0.1-1
 fontforge 20251009-5
 fzf 0.67.0-2
 gdb 17.1-2
