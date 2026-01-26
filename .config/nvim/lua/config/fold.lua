@@ -1,25 +1,11 @@
 --- @class Fold
 local M = {}
 
-function M.setup()
-    vim.opt.fillchars:append({
-        fold = ' ',
-        foldopen = 'v',
-        foldclose = '>',
-        foldsep = ' ',
-    })
-    vim.o.foldlevel = 1
-    vim.o.foldtext = ''
-    vim.o.foldnestmax = 2
-    vim.o.foldminlines = 5
-    vim.api.nvim_create_autocmd('FileType', {
-        pattern = '*',
-        callback = function()
-            vim.wo.foldmethod = 'expr'
-            vim.wo.foldexpr = 'v:lua.require("config.fold").foldexpr()'
-        end,
-        group = vim.api.nvim_create_augroup('AFold', { clear = true }),
-    })
+---@param bufnr number the buffer number
+---@return boolean whether the below foldexpr() is applicable to the buffer
+local function is_foldexpr(bufnr)
+    local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
+    return ok and parser
 end
 
 --- @return string Fold level (as string for foldexpr)
@@ -140,6 +126,31 @@ function M.foldexpr()
         return '>' .. max_level
     end
     return tostring(max_level)
+end
+
+
+function M.setup()
+    vim.opt.fillchars:append({
+        fold = ' ',
+        foldopen = 'v',
+        foldclose = '>',
+        foldsep = ' ',
+    })
+    vim.o.foldlevel = 1
+    vim.o.foldtext = ''
+    vim.o.foldnestmax = 2
+    vim.o.foldminlines = 5
+    vim.api.nvim_create_autocmd('FileType', {
+        pattern = '*',
+        callback = function(opts)
+            -- do not override fold settings if not applicable
+            if is_foldexpr(opts.bufnr) then
+                vim.wo.foldmethod = 'expr'
+                vim.wo.foldexpr = 'v:lua.require("config.fold").foldexpr()'
+            end
+        end,
+        group = vim.api.nvim_create_augroup('AFold', { clear = true }),
+    })
 end
 
 return M
