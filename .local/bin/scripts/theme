@@ -96,7 +96,6 @@ Darwin)
 esac
 
 if tmux list-sessions >/dev/null 2>&1; then
-  test -f "$XDG_CONFIG_HOME/tmux/tmux.conf" && tmux source-file "$XDG_CONFIG_HOME/tmux/tmux.conf"
   [ "$TMUX" ] && tmux refresh-client -S
 fi
 
@@ -105,14 +104,17 @@ test -d "$XDG_CONFIG_HOME/rg/themes" && ln -sf "$XDG_CONFIG_HOME/rg/themes/$them
 test -d "$XDG_CONFIG_HOME/task/themes" && ln -sf "$XDG_CONFIG_HOME/task/themes/$theme.theme" "$XDG_CONFIG_HOME/task/themes/theme.theme"
 
 if command -v claude >/dev/null 2>&1; then
+  CLAUDE_CONFIG="${CLAUDE_CONFIG_DIR:-$HOME}/.claude.json"
+  claude_theme='light'
   case "$theme" in
   daylight)
-    claude config set theme light
+    claude_theme='light'
     ;;
   midnight)
-    claude config set theme dark
+    claude_theme='dark'
     ;;
   esac
+  test -f "$CLAUDE_CONFIG" && jq ".theme=\"$claude_theme\"" "$CLAUDE_CONFIG" >"$CLAUDE_CONFIG.tmp" && mv "$CLAUDE_CONFIG.tmp" "$CLAUDE_CONFIG"
 fi
 
 test -f ~/.zshenv && sed -i "s|^\(export THEME=\).*|\1$theme|" ~/.zshenv

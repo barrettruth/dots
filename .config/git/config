@@ -1,5 +1,5 @@
 [user]
-    username = barrett-ruth
+    username = barrettruth
     name = Barrett Ruth
     email = br.barrettruth@gmail.com
 [init]
@@ -10,12 +10,6 @@
     excludesfile = /home/frozen/.config/git/ignore
 [color]
     ui = auto
-[diff]
-    tool = nvimdiff
-[difftool]
-    prompt = false
-[difftool "nvimdiff"]
-    cmd = "nvim -c 'se scl=no' -d $LOCAL $REMOTE"
 [alias]
     a = add
     b = branch
@@ -54,3 +48,11 @@
     autoSetupRemote = true
 [credential]
 	helper = cache
+[merge]
+	tool = codediff
+[mergetool "codediff"]
+	cmd = nvim \"$MERGED\" -c \"CodeDiff merge \\\"$MERGED\\\"\"
+[diff]
+	tool = codediff
+[difftool "codediff"]
+	cmd = nvim \"$LOCAL\" \"$REMOTE\" +\"CodeDiff file $LOCAL $REMOTE\"

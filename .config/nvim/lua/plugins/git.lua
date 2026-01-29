@@ -54,4 +54,11 @@ return {
             signcolumn = false,
         },
     },
+    {
+        'esmuellert/codediff.nvim',
+        dependencies = { 'MunifTanjim/nui.nvim' },
+        opts = {
+            default_layout = "unified",
+        }
+    }
 }

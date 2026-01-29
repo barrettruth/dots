@@ -22,11 +22,12 @@ bar)
   if [ "$(tmux show-options | grep mouse | awk '{ print $NF }')" = "on" ]; then
     mouse='[m]'
   fi
-  sessions=$(tmux ls -F '#{session_name}' | sed "s/$2/$2*/")
+  set -f
+  sessions=$(tmux ls -F '#{session_name}' | sed "s/^$2$/$2*/")
   keys="H J K L"
   bar_content=""
   i=0
-  total=$(echo "$sessions" | wc -w)
+  total=$(echo "$sessions" | wc -l)
   for sess in $sessions; do
     if [ $i -lt 4 ]; then
       key=$(echo "$keys" | cut -d' ' -f $((i + 1)))
@@ -38,6 +39,7 @@ bar)
     bar_content="$bar_content$key:$sess "
     i=$((i + 1))
   done
+  set +f
   echo "$mouse $bar_content"
   ;;
 switch)

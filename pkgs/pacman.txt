@@ -5,6 +5,7 @@ base-devel 1-2
 biber 1:2.21-3
 bind 9.20.18-1
 bitwarden 2025.10.0-1
+bitwarden-cli 2025.11.0-1
 bluez 5.85-1
 bluez-utils 5.85-1
 bridge-utils 1.7.1-3

@@ -33,7 +33,7 @@ copy_systemd_configs() {
 
 copy_nix_configs() {
   ensure_dir etc/nix
-  test -f /etc/nix/nix.conf && cp -f /etc/nix/nix.conf etc/nix
+  test -d /etc/nix && cp -f /etc/nix/* etc/nix
 }
 
 copy_xdg_configs() {

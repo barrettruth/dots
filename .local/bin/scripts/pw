@@ -1,15 +1,8 @@
 #!/bin/sh
-
-PW_LEN="${1:-15}"
-
-PASSWORD="$(LC_ALL=C tr -dc 'A-Za-z0-9_!@#$%^&*()-+=' </dev/urandom | head -c "$PW_LEN")"
-
-if [ "$(uname -s)" = 'Darwin' ]; then
-    echo "$PASSWORD" | pbcopy
-else
-    if [ "$XDG_SESSION_TYPE" = 'x11' ]; then
-        echo "$PASSWORD" | xclip -selection clipboard
-    else
-        echo "$PASSWORD" | wl-copy
-    fi
-fi
+id=$(
+  bw list items \
+  | jq -r '.[] | "\(.name)\t\(.login.username // "")\t\(.id)"' \
+  | rofi -dmenu -i -p bw \
+  | awk -F'\t' '{print $3}'
+)
+[ -n "$id" ] && bw get password "$id" | wl-copy

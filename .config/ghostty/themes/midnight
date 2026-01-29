@@ -16,7 +16,9 @@ palette = 14=#7dd6e0
 palette = 15=#ffffff
 background = #121212
 foreground = #e0e0e0
-cursor-color = #e0e0e0
+cursor-color = #ff6b6b
 cursor-text = #121212
 selection-background = #2d2d2d
 selection-foreground = #e0e0e0
+
+# vim: ft=config

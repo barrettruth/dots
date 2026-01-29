@@ -21,3 +21,4 @@ palette = 13=#ff00ff
 palette = 14=#00ffff
 palette = 15=#ffffff
 
+# vim: ft=config

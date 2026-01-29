@@ -20,3 +20,5 @@ cursor-color = #ebdbb2
 cursor-text = #1d2021
 selection-background = #665c54
 selection-foreground = #ebdbb2
+
+# vim: ft=config

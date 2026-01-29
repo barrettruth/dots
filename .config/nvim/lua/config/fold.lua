@@ -3,7 +3,7 @@ local M = {}
 
 ---@param bufnr number the buffer number
 ---@return boolean whether the below foldexpr() is applicable to the buffer
-local function is_foldexpr(bufnr)
+local function should_apply_foldexpr(bufnr)
     local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
     return ok and parser
 end
@@ -144,7 +144,7 @@ function M.setup()
         pattern = '*',
         callback = function(opts)
             -- do not override fold settings if not applicable
-            if is_foldexpr(opts.bufnr) then
+            if should_apply_foldexpr(opts.bufnr) then
                 vim.wo.foldmethod = 'expr'
                 vim.wo.foldexpr = 'v:lua.require("config.fold").foldexpr()'
             end

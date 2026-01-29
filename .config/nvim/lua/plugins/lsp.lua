@@ -15,7 +15,7 @@ return {
         dependencies = 'folke/lazydev.nvim',
         ---@module 'blink.cmp'
         ---@type blink.cmp.Config
-        event = { 'InsertEnter', 'CmdlineEnter' },
+        event = { 'InsertEnter', 'LspAttach' },
         config = function(_, opts)
             vim.o.pumheight = 15
             opts.completion.menu.max_height = vim.o.pumheight
@@ -56,15 +56,16 @@ return {
                 },
             },
             cmdline = {
-                completion = {
-                    menu = {
-                        auto_show = true,
-                    },
-                },
-                keymap = {
-                    ['<left>'] = false,
-                    ['<right>'] = false,
-                },
+                enabled = false,
+            --     completion = {
+            --         menu = {
+            --             auto_show = true,
+            --         },
+            --     },
+            --     keymap = {
+            --         ['<left>'] = false,
+            --         ['<right>'] = false,
+            --     },
             },
             sources = {
                 default = { 'lsp', 'path', 'snippets', 'buffer' },

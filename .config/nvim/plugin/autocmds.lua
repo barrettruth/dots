@@ -60,16 +60,16 @@ au({ 'FocusLost', 'BufLeave', 'VimLeave' }, {
     group = aug,
 })
 
-au({ 'VimEnter', 'BufWinEnter', 'BufEnter' }, {
-    callback = function()
-        vim.api.nvim_set_option_value('cursorline', true, { scope = 'local' })
-    end,
-    group = aug,
+vim.api.nvim_create_autocmd('WinEnter', {
+  group = aug,
+  callback = function()
+    vim.wo.cursorline = true
+  end,
 })
 
-au('WinLeave', {
-    callback = function()
-        vim.api.nvim_set_option_value('cursorline', false, { scope = 'local' })
-    end,
-    group = aug,
+vim.api.nvim_create_autocmd('WinLeave', {
+  group = aug,
+  callback = function()
+    vim.wo.cursorline = false
+  end,
 })

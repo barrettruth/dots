@@ -1,6 +1,6 @@
 window-decoration = none
-font-family = "Jetbrains Mono"
-font-feature = "-calt"
+font-family = Berkeley Mono
+font-feature = -calt
 font-size = 20
 adjust-cell-height = 10%
 
