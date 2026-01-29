@@ -9,7 +9,7 @@ Commands:
   brightness {up,down}          Adjust brightness accordingly and notify
   spawnfocus <app> [args...]    Focus existing window or spawn app with args
   pull [app]                    Pull window to current workspace (picker if no app)
-  borders                       Initialize dynamic borders
+  windowrules                   Apply dynamic window rules
   exit                          Safely exit hyprland
 
 Options:
@@ -96,6 +96,7 @@ pull)
   if [ -n "$APP" ]; then
     case "$APP" in
     google-chrome | google-chrome-stable) CLASS="google-chrome" ;;
+    zen) CLASS="zen" ;;
     chromium | ungoogled-chromium) CLASS="Chromium" ;;
     firefox) CLASS="firefox" ;;
     alacritty) CLASS="Alacritty" ;;
@@ -275,6 +276,24 @@ spawnfocus)
     done
   fi
   ;;
+windowrules)
+  socat -u UNIX-CONNECT:"$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - | while IFS= read -r line; do
+    event="${line%%>>*}"
+    data="${line#*>>}"
+    case "$event" in
+    windowtitlev2)
+      window_id="${data%%,*}"
+      window_title="${data#*,}"
+      case "$window_title" in
+      *'Extension: (Bitwarden Password Manager) - Bitwarden'*)
+        hyprctl --batch "dispatch setfloating address:0x$window_id; dispatch centerwindow address:0x$window_id"
+        ;;
+      esac
+      ;;
+    esac
+  done
+  ;;
+
 *)
   echo "Unknown subcommand: $cmd"
   usage
