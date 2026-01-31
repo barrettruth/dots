@@ -7,6 +7,28 @@ au('BufEnter', {
     group = aug,
 })
 
+au('BufWritePost', {
+    pattern = vim.env.XDG_CONFIG_HOME .. '/firefox/userChrome.css',
+    callback = function()
+        if
+            not vim.tbl_contains({ 'firefox', 'zen-browser' }, vim.env.BROWSER)
+        then
+            return
+        end
+        vim.notify(
+            'Updating firefox-based browser userChrome.css...',
+            vim.log.levels.INFO
+        )
+        local src = vim.env.XDG_CONFIG_HOME .. '/firefox/userChrome.css'
+        local targets =
+            vim.fn.glob(vim.env.HOME .. '/.zen/*release*/chrome', true, true)
+        for _, dir in ipairs(targets) do
+            vim.fn.system({ 'cp', src, dir .. '/userChrome.css' })
+        end
+    end,
+    group = aug,
+})
+
 au({ 'TermOpen', 'BufWinEnter' }, {
     callback = function(args)
         if vim.bo[args.buf].buftype == 'terminal' then
@@ -61,15 +83,15 @@ au({ 'FocusLost', 'BufLeave', 'VimLeave' }, {
 })
 
 vim.api.nvim_create_autocmd('WinEnter', {
-  group = aug,
-  callback = function()
-    vim.wo.cursorline = true
-  end,
+    group = aug,
+    callback = function()
+        vim.wo.cursorline = true
+    end,
 })
 
 vim.api.nvim_create_autocmd('WinLeave', {
-  group = aug,
-  callback = function()
-    vim.wo.cursorline = false
-  end,
+    group = aug,
+    callback = function()
+        vim.wo.cursorline = false
+    end,
 })
