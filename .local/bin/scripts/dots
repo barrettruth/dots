@@ -32,13 +32,16 @@ copy_xdg_configs() {
   dest="${XDG_CONFIG_HOME#"$HOME"/}"
   ensure_dir "$dest"
 
-  for folder in lf git npm nvim python rg tmux yamllint zsh mutt dunst ghostty fzf task rofi sway spectrwm X11 waybar hypr; do
+  for folder in sioyek lf git npm nvim python rg tmux yamllint zsh mutt dunst ghostty fzf task rofi sway spectrwm X11 waybar hypr; do
     test -d "$XDG_CONFIG_HOME/$folder" || continue
     test -d "$dest/$folder" && rm -rf "${dest:?}/$folder"
     cp -rf "$XDG_CONFIG_HOME/$folder" "$dest/$folder" || echo "Failed to copy $folder"
   done
 
-  test -f "$XDG_CONFIG_HOME"/claude/CLAUDE.md && mkdir -p "$dest/claude" && cp -f "$XDG_CONFIG_HOME"/claude/CLAUDE.md "$dest/claude"
+  if [ -d "$XDG_CONFIG_HOME"/claude ]; then
+    test -f "$XDG_CONFIG_HOME"/claude/CLAUDE.md && ensure_dir "$dest/claude" && cp -f "$XDG_CONFIG_HOME"/claude/CLAUDE.md "$dest/claude"
+    test -f "$XDG_CONFIG_HOME"/claude/settings.json && ensure_dir "$dest/claude" && cp -f "$XDG_CONFIG_HOME"/claude/settings.json "$dest/claude"
+  fi
 
   test -d "$dest/zsh/pure" && rm -rf "$dest/zsh/pure"
   test -f "$dest/zsh/.zcompdump" && rm -f "$dest/zsh/.zcompdump"

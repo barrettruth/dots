@@ -1,0 +1,11 @@
+{
+  "network_access": true,
+  "allowed_domains": [
+    "github.com",
+    "raw.githubusercontent.com",
+    "api.github.com"
+  ],
+  "tools": {
+    "web_fetch": true
+  }
+}
