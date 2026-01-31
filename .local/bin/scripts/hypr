@@ -93,58 +93,66 @@ volume)
   ;;
 pull)
   APP="$1"
-  if [ -n "$APP" ]; then
-    case "$APP" in
-    google-chrome | google-chrome-stable) CLASS="google-chrome" ;;
-    zen | zen-browser) CLASS="zen" ;;
-    chromium | ungoogled-chromium) CLASS="Chromium" ;;
-    firefox) CLASS="firefox" ;;
-    alacritty) CLASS="Alacritty" ;;
-    code | vscodium) CLASS="Code" ;;
-    signal-desktop | signal) CLASS="signal" ;;
-    telegram-desktop | telegram) CLASS="TelegramDesktop" ;;
-    ghostty) CLASS="com.mitchellh.ghostty" ;;
-    bitwarden-desktop | bitwarden) CLASS="Bitwarden" ;;
-    slack) CLASS="Slack" ;;
-    discord) CLASS="discord" ;;
-    vesktop) CLASS="vesktop" ;;
-    *) CLASS="$APP" ;;
-    esac
-    CUR_ADDR=$(hyprctl -j activewindow | jq -r '.address')
-    WIN_ADDRS=$(
-      hyprctl -j clients 2>/dev/null | jq -r --arg class "$CLASS" '
-  .[]? | select(
-    ((.xdgTag // "") | ascii_downcase | contains($class | ascii_downcase)) or
-    ((.initialClass // "") | ascii_downcase | contains($class | ascii_downcase)) or
-    ((.class // "") | ascii_downcase | contains($class | ascii_downcase))
-  ) | "\(.class)\t\(.title)\t\(.address)"'
-    )
-    WIN_COUNT=$(echo "$WIN_ADDRS" | grep -c .)
-    if [ "$WIN_COUNT" -eq 1 ]; then
-      WIN_ADDR=$(echo "$WIN_ADDRS" | awk -F'\t' '{print $3}')
-    elif [ "$WIN_COUNT" -gt 1 ]; then
-      SELECTED=$(echo "$WIN_ADDRS" |
-        awk -F'\t' -v cur="$CUR_ADDR" '{if($3!=cur) print $1 ": " $2 "\t" $3}' |
-        rofi -dmenu -i -p "pull window")
-      WIN_ADDR=$(echo "$SELECTED" | awk -F'\t' '{print $2}')
-    fi
-  fi
-  if [ -z "$SELECTED" ]; then
+  case "$APP" in
+  google-chrome | google-chrome-stable) CLASS="google-chrome" ;;
+  zen | zen-browser) CLASS="zen" ;;
+  chromium | ungoogled-chromium) CLASS="Chromium" ;;
+  firefox) CLASS="firefox" ;;
+  alacritty) CLASS="Alacritty" ;;
+  code | vscodium) CLASS="Code" ;;
+  signal-desktop | signal) CLASS="signal" ;;
+  telegram-desktop | telegram) CLASS="TelegramDesktop" ;;
+  ghostty) CLASS="com.mitchellh.ghostty" ;;
+  bitwarden-desktop | bitwarden) CLASS="Bitwarden" ;;
+  slack) CLASS="Slack" ;;
+  discord) CLASS="discord" ;;
+  vesktop) CLASS="vesktop" ;;
+  *) CLASS="$APP" ;;
+  esac
+
+  CUR_WS=$(hyprctl activeworkspace -j | jq -r '.id')
+
+  CUR_ADDR=$(hyprctl -j activewindow | jq -r '.address // empty')
+
+  WIN_ADDRS=$(hyprctl -j clients 2>/dev/null | jq -r --arg pat "$CLASS" '
+    .[]?
+    | select(
+        (.class?               | ascii_downcase | contains($pat | ascii_downcase)) or
+        (.initialClass?        | ascii_downcase | contains($pat | ascii_downcase)) or
+        (.xdgTag? // ""        | ascii_downcase | contains($pat | ascii_downcase))
+      )
+    | "\(.class)\t\(.title // "no title")\t\(.address)"
+  ')
+
+  WIN_COUNT=$(echo "$WIN_ADDRS" | grep -c '^' || :)
+
+  if [ "$WIN_COUNT" -eq 0 ]; then
     exit 0
   fi
-  if [ -z "$WIN_ADDR" ]; then
-    CUR_ADDR=$(hyprctl -j activewindow | jq -r '.address')
-    WIN_ADDRS=$(hyprctl -j clients 2>/dev/null | jq -r '.[]? | "\(.class)\t\(.title)\t\(.address)"')
-    SELECTED=$(echo "$WIN_ADDRS" |
-      awk -F'\t' -v cur="$CUR_ADDR" '{if($3!=cur) print $1 ": " $2 "\t" $3}' |
-      rofi -dmenu -i -p "pull window")
+
+  if [ "$WIN_COUNT" -eq 1 ]; then
+    WIN_ADDR=$(echo "$WIN_ADDRS" | awk -F'\t' '{print $3}')
+  else
+    ROFI_LINES=$(
+      echo "$WIN_ADDRS" |
+        awk -F'\t' -v cur="$CUR_ADDR" '
+        $3 != cur { printf "%s : %s\t%s\n", $1, $2, $3 }
+      '
+    )
+
+    [ -z "$ROFI_LINES" ] && exit 0
+
+    SELECTED=$(echo "$ROFI_LINES" | rofi -dmenu -i -p "pull window")
+
+    [ -z "$SELECTED" ] && exit 0
+
     WIN_ADDR=$(echo "$SELECTED" | awk -F'\t' '{print $2}')
   fi
-  if [ -n "$WIN_ADDR" ]; then
-    CURRENT_WS="$(hyprctl activeworkspace | head -n1 | awk -F'[()]' '{print $2}')"
-    hyprctl dispatch movetoworkspace "$CURRENT_WS,address:$WIN_ADDR"
-    hyprctl dispatch focuswindow "address:$WIN_ADDR"
-  fi
+
+  [ -z "$WIN_ADDR" ] && exit 0
+
+  hyprctl dispatch movetoworkspace "${CUR_WS},address:${WIN_ADDR}"
+  hyprctl dispatch focuswindow "address:${WIN_ADDR}"
   ;;
 spawnfocus)
   WS=""
