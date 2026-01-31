@@ -35,7 +35,7 @@ ghostty 1.2.3-2
 git 2.52.0-2
 git-lfs 3.7.1-1
 github-cli 2.86.0-1
-glab 1.81.0-1
+glab 1.82.0-1
 gnome-desktop 1:44.4-1
 gnome-epub-thumbnailer 1.8-2
 go 2:1.25.6-1
@@ -47,7 +47,7 @@ gst-plugins-bad 1.26.10-3
 hypridle 0.1.7-6
 hyprland 0.53.3-1
 hyprlock 0.9.2-8
-hyprpaper 0.8.2-1
+hyprpaper 0.8.3-1
 imagemagick 7.1.2.13-1
 iptables-nft 1:1.8.11-2
 iwd 3.10-1
@@ -91,9 +91,11 @@ perf 6.18-3
 perl-file-homedir 1.006-8
 perl-image-exiftool 13.44-1
 perl-yaml-tiny 1.76-3
+pipewire-alsa 1:1.4.10-1
+pipewire-jack 1:1.4.10-1
+pipewire-pulse 1:1.4.10-1
 poppler 26.01.0-1
 postgresql 18.1-2
-pulseaudio 17.0+r98+gb096704c0-1
 python-black 25.12.0-4
 python-cpplint 2.0.0-2
 python-isort 7.0.0-2
@@ -136,7 +138,7 @@ tree-sitter-cli 0.25.10-3
 ttf-jetbrains-mono 2.304-2
 typst 1:0.14.2-1
 typstyle 0.14.4-2
-uv 0.9.27-1
+uv 0.9.28-1
 valgrind 3.25.1-3
 vde2 2.3.3-8
 virt-manager 5.1.0-3
@@ -146,6 +148,7 @@ webkit2gtk 2.50.4-1
 websocat 1.14.0-1
 wev 1.1.0-1
 wf-recorder 0.6.0-1
+wireplumber 0.5.13-1
 wl-clipboard 1:2.2.1-3
 woff2-font-awesome 7.1.0-1
 xclip 0.13-6

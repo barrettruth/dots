@@ -96,7 +96,7 @@ pull)
   if [ -n "$APP" ]; then
     case "$APP" in
     google-chrome | google-chrome-stable) CLASS="google-chrome" ;;
-    zen) CLASS="zen" ;;
+    zen | zen-browser) CLASS="zen" ;;
     chromium | ungoogled-chromium) CLASS="Chromium" ;;
     firefox) CLASS="firefox" ;;
     alacritty) CLASS="Alacritty" ;;
@@ -178,6 +178,7 @@ spawnfocus)
   case "$APP" in
   google-chrome | google-chrome-stable) CLASS="google-chrome" ;;
   chromium | ungoogled-chromium) CLASS="Chromium" ;;
+  zen | zen-browser) CLASS="zen" ;;
   firefox) CLASS="firefox" ;;
   alacritty) CLASS="Alacritty" ;;
   code | vscodium) CLASS="Code" ;;
@@ -284,9 +285,15 @@ windowrules)
     windowtitlev2)
       window_id="${data%%,*}"
       window_title="${data#*,}"
+      window_title=$(echo "$window_title" | tr '[:upper:]' '[:lower:]')
       case "$window_title" in
-      *'Extension: (Bitwarden Password Manager) - Bitwarden'*)
+      *'extension: (bitwarden password manager) - bitwarden'*)
         hyprctl --batch "dispatch setfloating address:0x$window_id; dispatch centerwindow address:0x$window_id"
+        ;;
+      *'sign in - google accounts '*)
+        hyprctl --batch "dispatch setfloating address:0x$window_id; \
+                     dispatch resizewindowpixel exact 30% 70%,address:0x$window_id; \
+                     dispatch centerwindow address:0x$window_id"
         ;;
       esac
       ;;

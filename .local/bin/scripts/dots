@@ -7,6 +7,7 @@ abort() {
 
 cd "$HOME/dev/dots" || abort "Cannot enter dotfiles directory: $HOME/dev/dots"
 test -n "$XDG_CONFIG_HOME" || abort "XDG_CONFIG_HOME not set"
+test -n "$XDG_DATA_HOME" || abort "XDG_DATA_HOME not set"
 
 ensure_dir() {
   test -d "$1" || mkdir -p "$1" || abort "Failed to create directory $1"
@@ -22,23 +23,12 @@ copy_pkg_lists() {
   test -n "$CARGO_HOME" && test -d "$CARGO_HOME/bin" && ls "$CARGO_HOME/bin" > pkgs/cargo.txt
 }
 
-copy_systemd_configs() {
-  ensure_dir etc/systemd/system
-  cp /etc/systemd/system/*.service etc/systemd/system
-  cp /etc/systemd/system/*.timer etc/systemd/system
-
-  ensure_dir .config/systemd
-  cp -r "$XDG_CONFIG_HOME"/systemd .config
-}
-
 copy_nix_configs() {
   ensure_dir etc/nix
   test -d /etc/nix && cp -f /etc/nix/* etc/nix
 }
 
 copy_xdg_configs() {
-  test -n "$XDG_CONFIG_HOME" || abort "XDG_CONFIG_HOME not set"
-
   dest="${XDG_CONFIG_HOME#"$HOME"/}"
   ensure_dir "$dest"
 
@@ -65,27 +55,27 @@ copy_xdg_configs() {
 }
 
 copy_etc_configs() {
-  ensure_dir etc/default
-  ensure_dir etc/keyd
-  ensure_dir etc/pacman.d/hooks
-  ensure_dir etc/X11/xorg.conf.d
-  ensure_dir etc/xdg/reflector
-
-  test -f /etc/default/grub && cp -f /etc/default/grub etc/default/grub || echo "Missing /etc/default/grub"
-  test -f /etc/doas.conf && cp -f /etc/doas.conf etc/doas.conf || echo "Missing /etc/doas.conf"
-  test -d /etc/keyd && cp -f /etc/keyd/* etc/keyd 2>/dev/null || echo "Missing /etc/keyd"
+  test -f /etc/doas.conf && ensure_dir etc && cp -f /etc/doas.conf etc || echo "Missing /etc/doas.conf"
+  test -f /etc/default/grub && ensure_dir etc/default && cp -f /etc/default/grub etc/default || echo "Missing /etc/default/grub"
+  test -d /etc/keyd && ensure_dir etc/keyd && cp -f /etc/keyd/* etc/keyd 2>/dev/null || echo "Missing /etc/keyd"
   test -f /etc/pacman.conf && cp -f /etc/pacman.conf etc/pacman.conf || echo "Missing /etc/pacman.conf"
-  test -d /etc/pacman.d/hooks && cp -rf /etc/pacman.d/hooks/* etc/pacman.d/hooks 2>/dev/null || echo "Missing pacman hooks"
-  test -d /etc/X11/xorg.conf.d && cp -rf /etc/X11/xorg.conf.d/* etc/X11/xorg.conf.d 2>/dev/null || echo "Missing X11 configs"
-  test -f /etc/xdg/reflector/reflector.conf && cp /etc/xdg/reflector/reflector.conf etc/xdg/reflector/reflector.conf || echo "Missing reflector.conf"
+  test -d /etc/pacman.d/hooks && ensure_dir etc/pacman.d/hooks && cp -rf /etc/pacman.d/hooks/* etc/pacman.d/hooks || echo "Missing pacman hooks"
+  test -d /etc/X11/xorg.conf.d && ensure_dir etc/X11/xorg.conf.d && cp -rf /etc/X11/xorg.conf.d/* etc/X11/xorg.conf.d || echo "Missing X11 configs"
+  test -f /etc/xdg/reflector/reflector.conf && ensure_dir etc/xdg/reflector && cp -f /etc/xdg/reflector/reflector.conf etc/xdg/reflector || echo "Missing reflector.conf"
 
-  test -n "$XDG_DATA_HOME/applications" || abort "XDG_DATA_HOME not set"
   dest="${XDG_DATA_HOME#"$HOME"/}/applications"
   test -d "$XDG_DATA_HOME"/applications && ensure_dir "$dest" && cp "$XDG_DATA_HOME/applications/"*.desktop "$XDG_DATA_HOME/applications/"*.list "$dest" 2>/dev/null
+}
+
+copy_firefox_configs() {
+  test -f "$XDG_CONFIG_HOME"/firefox/userChrome.css || abort "Firefox user styling doesn't exist."
+
+  dest="${XDG_CONFIG_HOME#"$HOME"/}/firefox"
+  ensure_dir "$dest" && cp -f "$XDG_CONFIG_HOME"/firefox/userChrome.css "$dest"
 }
 
 copy_pkg_lists
 copy_xdg_configs
 copy_etc_configs
-copy_systemd_configs
 copy_nix_configs
+copy_firefox_configs

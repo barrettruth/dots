@@ -1,3 +1,4 @@
+apple_cursor 2.0.1-1
 basedpyright-bin 1.37.2-1
 bridge-utils 1.7.1-5
 clipmenu-git 6.2.0.r72.g46d45c9-1
@@ -24,5 +25,6 @@ ttf-vista-fonts 1-11
 tzupdate 3.1.0-1
 vacuum-bin 0.20.2-1
 vesktop-bin 1.6.3-1
-zen-browser-bin 1.18.2b-1
+voxtype 0.5.5-1
+zen-browser-bin 1.18.3b-1
 zoom 6.7.2-1
