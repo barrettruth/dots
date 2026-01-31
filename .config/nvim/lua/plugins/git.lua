@@ -54,19 +54,4 @@ return {
             signcolumn = false,
         },
     },
-    {
-        'esmuellert/codediff.nvim',
-        dir = '~/.local/share/nvim/lazy/codediff.nvim',
-        -- dependencies = { 'MunifTanjim/nui.nvim' },  -- only needed for backend = "nui"
-        opts = {
-            explorer = {
-                backend = 'quickfix',  -- "quickfix" (no deps) or "nui" (tree sidebar)
-                -- backend = 'nui',
-            },
-            history = {
-                backend = 'quickfix',  -- "quickfix" (no deps) or "nui" (tree panel)
-                -- backend = 'nui',
-            },
-        },
-    },
 }
