@@ -28,5 +28,6 @@ tzupdate
 vacuum-bin
 vesktop-bin
 voxtype
+voxtype-debug
 zen-browser-bin
 zoom

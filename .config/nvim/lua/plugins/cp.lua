@@ -63,7 +63,7 @@ BinPackArguments: false
 BinPackParameters: false]]
 
 return {
-    'barrett-ruth/cp.nvim',
+    'barrettruth/cp.nvim',
     dir = '~/dev/cp.nvim',
     cmd = 'CP',
     lazy = false,

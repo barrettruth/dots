@@ -12,7 +12,7 @@ function _G.lf.setup()
 			name = "nvim-treesitter",
 		},
 		{
-			src = "https://github.com/barrett-ruth/midnight.nvim.git",
+			src = "https://github.com/barrettruth/midnight.nvim.git",
 			name = "midnight.nvim",
 		},
 	})

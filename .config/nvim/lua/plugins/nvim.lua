@@ -1,6 +1,6 @@
 return {
     {
-        'barrett-ruth/live-server.nvim',
+        'barrettruth/live-server.nvim',
         build = 'pnpm add -g live-server',
         cmd = { 'LiveServerStart', 'LiveServerStart' },
         config = true,
@@ -410,7 +410,7 @@ return {
         },
     },
     {
-        'barrett-ruth/midnight.nvim',
+        'barrettruth/midnight.nvim',
         dir = '~/dev/midnight.nvim',
         init = function()
             vim.api.nvim_create_autocmd({ 'OptionSet' }, {

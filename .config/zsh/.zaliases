@@ -30,7 +30,7 @@ j() {
         site) cd ~/dev/barrettruth.com;;
         cp) cd ~/dev/competitive-programming;;
         trb) cd ~/dev/trb-capital-management;;
-        lz) cd ~/.local/share/nvim/lazy;;
+        lazy) cd ~/.local/share/nvim/lazy;;
         scr) cd "$SCRIPTS";;
         uva) cd ~/dev/uva;;
         config) cd "$XDG_CONFIG_HOME";;

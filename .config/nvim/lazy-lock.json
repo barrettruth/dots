@@ -4,7 +4,6 @@
   "blink.cmp": { "branch": "main", "commit": "b137f63d89d0285ca76eed12e1923220e0aff8c1" },
   "blink.indent": { "branch": "main", "commit": "9c80820ca77218a8d28e70075d6f44a1609911fe" },
   "cloak.nvim": { "branch": "main", "commit": "648aca6d33ec011dc3166e7af3b38820d01a71e4" },
-  "codediff.nvim": { "branch": "feat/remove-nui", "commit": "57671fb5610c2bc555a0bdfee18fcdc6d2d01d79" },
   "dial.nvim": { "branch": "master", "commit": "f2634758455cfa52a8acea6f142dcd6271a1bf57" },
   "format-ts-errors.nvim": { "branch": "main", "commit": "4b7418d6689bc0fd3c1db0500c67133422522384" },
   "fzf-lua": { "branch": "main", "commit": "1cd4d8f36789061aa7b7d0718bc13849f92d6d77" },

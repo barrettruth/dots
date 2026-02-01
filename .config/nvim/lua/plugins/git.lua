@@ -6,7 +6,15 @@ local prev = nil
 
 return {
     {
+        dir = '~/dev/resolve.nvim',
+        opts = {},
+        event = { 'BufReadPre', 'BufNewFile' },
+    },
+    {
         'tpope/vim-fugitive',
+        dependencies = {
+            { dir = '~/dev/fugitive-ts.nvim', opts = { debug = true } },
+        },
         cmd = 'Git',
     },
     {

@@ -95,6 +95,7 @@ pipewire-jack
 pipewire-pulse
 poppler
 postgresql
+pre-commit
 python-black
 python-cpplint
 python-isort
