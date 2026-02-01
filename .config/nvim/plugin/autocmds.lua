@@ -11,7 +11,7 @@ au('BufWritePost', {
     pattern = (vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. '/.config'))
         .. '/firefox/userChrome.css',
     callback = function()
-        if not vim.tbl_contains({ 'firefox', 'zen-browser' }, vim.env.HOME) then
+        if not vim.tbl_contains({ 'firefox', 'zen-browser' }, vim.env.BROWSER) then
             return
         end
         vim.notify(

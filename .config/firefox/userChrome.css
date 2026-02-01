@@ -44,3 +44,8 @@ zen-workspace[active] tab:not([zen-glance-tab="true"]) {
 .zen-current-workspace-indicator {
   display: none !important;
 }
+
+.tab-icon-overlay[muted],
+.tab-icon-overlay[soundplaying] {
+  display: none !important;
+}
