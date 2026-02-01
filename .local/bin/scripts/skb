@@ -1,21 +1,28 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-if [ "$USE_WAYLAND" ]; then
-  if [ "$XDG_CURRENT_DESKTOP" = 'Hyprland' ]; then
-    hyprctl switchxkblayout current next
-  elif [ "$XDG_CURRENT_DESKTOP" = 'sway' ]; then
-    if swaymsg -t get_inputs | grep -qi "Colemak"; then
-      swaymsg input type:keyboard xkb_variant "''"
-    else
-      swaymsg input type:keyboard xkb_variant colemak
-    fi
-  fi
-else
-  current="$(setxkbmap -query | awk '/variant/{print $2}')"
-  if [ "$current" = "colemak" ]; then
-    setxkbmap -layout us
+if [ "${XDG_SESSION_TYPE:-x11}" = wayland ] && [ "${XDG_CURRENT_DESKTOP:-}" = Hyprland ]; then
+  current=$(hyprctl devices -j 2>/dev/null |
+    jq -r '.keyboards[] | select(.main == true) | .active_keymap')
+
+  if echo "$current" | grep -iq colemak; then
+    kb="English (US)"
   else
-    setxkbmap -layout us -variant colemak
+    kb="Colemak"
+  fi
+
+  hyprctl devices -j 2>/dev/null |
+    jq -r '.keyboards[].name' |
+    while IFS= read -r kb; do
+      hyprctl switchxkblayout "$kb" next >/dev/null 2>&1
+    done
+else
+  if [ "$(setxkbmap -query 2>/dev/null | awk '/variant:/ {print $2}')" = colemak ]; then
+    kb="English (US)"
+    setxkbmap us
+  else
+    kb="Colemak"
+    setxkbmap us colemak
   fi
 fi
 
+notify-send -u low "Keyboard layout: $kb"

@@ -11,13 +11,13 @@
     "format": " {} [{}]",
     "separate-outputs": true,
     "max-length": 80,
-    "rewrite": {
-    }
+    "rewrite": {}
   },
 
   "modules-center": [],
 
   "modules-right": [
+    "custom/voxtype",
     "backlight",
     "pulseaudio",
     "network",
@@ -60,6 +60,18 @@
     "tooltip-format-wifi": "Signal: {signalStrength}%\nIP: {ipaddr}/{cidr}",
     "tooltip-format-ethernet": "IP: {ipaddr}/{cidr}\nGateway: {gwaddr}",
     "tooltip-format-disconnected": "Network: disconnected"
+  },
+
+  "custom/voxtype": {
+    "exec": "voxtype status --follow --format json --icon-theme text",
+    "return-type": "json",
+    "format": "{icon}",
+    "format-icons": {
+      "idle": "",
+      "stopped": "",
+      "recording": " voice:[REC] │ ",
+      "transcribing": " voice:[...] │ "
+    }
   },
 
   "backlight": {

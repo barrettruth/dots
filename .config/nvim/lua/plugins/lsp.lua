@@ -57,15 +57,15 @@ return {
             },
             cmdline = {
                 enabled = false,
-            --     completion = {
-            --         menu = {
-            --             auto_show = true,
-            --         },
-            --     },
-            --     keymap = {
-            --         ['<left>'] = false,
-            --         ['<right>'] = false,
-            --     },
+                --     completion = {
+                --         menu = {
+                --             auto_show = true,
+                --         },
+                --     },
+                --     keymap = {
+                --         ['<left>'] = false,
+                --         ['<right>'] = false,
+                --     },
             },
             sources = {
                 default = { 'lsp', 'path', 'snippets', 'buffer' },
@@ -144,7 +144,7 @@ return {
                         },
                         extra_args = function(params)
                             if params.ft == 'jsonc' then
-                                return { '--trailing-comma', 'none' }
+                                return { '--trailing-comma=none' }
                             end
                             return {}
                         end,
@@ -179,10 +179,9 @@ return {
                     hover.printenv,
                 },
                 on_attach = require('config.lsp').on_attach,
-                debounce = 0,
             })
         end,
-        dependencies = 'nvimtools/none-ls-extras.nvim',
+        dependencies = { 'nvimtools/none-ls-extras.nvim' },
     },
     {
         'b0o/SchemaStore.nvim',

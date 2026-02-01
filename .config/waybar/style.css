@@ -1,3 +1,5 @@
+@import "themes/theme.css";
+
 * {
   font-family: "Berkeley Mono", monospace;
   font-size: 15px;
@@ -8,4 +10,10 @@ button {
   border-radius: 0;
 }
 
-@import "themes/theme.css";
+#custom-voxtype.recording {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+#custom-voxtype.transcribing {
+  font-style: italic;
+}
