@@ -1,171 +1,171 @@
-act 0.2.84-1
-aws-cli 1.44.15-1
-base 3-2
-base-devel 1-2
-biber 1:2.21-3
-bind 9.20.18-1
-bitwarden-cli 2025.11.0-1
-bluez 5.85-1
-bluez-utils 5.85-1
-brightnessctl 0.5.1-3
-buf 1.64.0-1
-cliphist 1:0.7.0-1
-cmake 4.2.3-1
-dash 0.5.12-1
-dhcpcd 10.3.0-1
-direnv 2.37.1-1
-discord 1:0.0.122-1
-dmidecode 3.7-1
-dnsmasq 2.92-1
-docker 1:29.2.0-1
-docker-compose 5.0.2-1
-dunst 1.13.0-1
-efibootmgr 18-3
-ex-vi-compat 1-3
-eza 0.23.4-1
-fd 10.3.0-1
-feh 3.11.2-2
-ffmpegthumbnailer 2.3.0-1
-fontforge 20251009-5
-fzf 0.67.0-2
-gdb 17.1-2
-geoclue 2.8.0-1
-ghostty 1.2.3-2
-git 2.52.0-2
-git-lfs 3.7.1-1
-github-cli 2.86.0-1
-glab 1.82.0-1
-gnome-desktop 1:44.4-1
-gnome-epub-thumbnailer 1.8-2
-go 2:1.25.6-1
-graphicsmagick 1.3.46-1
-grim 1.5.0-2
-grub 2:2.14-1
-gst-libav 1.26.10-3
-gst-plugins-bad 1.26.10-3
-hypridle 0.1.7-6
-hyprland 0.53.3-1
-hyprlock 0.9.2-8
-hyprpaper 0.8.3-1
-imagemagick 7.1.2.13-1
-iptables-nft 1:1.8.11-2
-iwd 3.10-1
-jq 1.8.1-1
-jupyter-notebook 7.5.3-1
-jupyter-server 2.17.0-3
-kdialog 25.12.1-1
-keyd 2.6.0-2
-kitty 0.45.0-4
-lf 40-1
-libcurl-compat 8.18.0-3
-libcurl-gnutls 8.18.0-3
-libfido2 1.16.0-2
-libmupdf 1.27.0-2
-libreoffice-fresh 25.8.4-3
-libxinerama 1.1.6-1
-linux 6.18.7.arch1-1
-linux-firmware 20260110-1
-linux-headers 6.18.7.arch1-1
-lua-language-server 3.17.1-1
-lua51 5.1.5-13
-luarocks 3.13.0-1
-maim 5.8.1-3
-man-db 2.13.1-1
-man-pages 6.16-1
-mpv 1:0.41.0-2
-mypy 1.19.1-1
-ninja 1.13.2-2
-ntfs-3g 2022.10.3-2
-nvidia-open 590.48.01-9
-ocaml 5.4.0-1
-opam 2.5.0-1
-openbsd-netcat 1.234_1-1
-opendoas 6.8.2-3
-openresolv 3.17.4-1
-openssh 10.2p1-2
-os-prober 1.83-1
-pass 1.7.4-7
-pavucontrol 1:6.2-1
-perf 6.18-3
-perl-file-homedir 1.006-8
-perl-image-exiftool 13.44-1
-perl-yaml-tiny 1.76-3
-pipewire-alsa 1:1.4.10-1
-pipewire-jack 1:1.4.10-1
-pipewire-pulse 1:1.4.10-1
-poppler 26.01.0-1
-postgresql 18.1-2
-python-black 25.12.0-4
-python-cpplint 2.0.0-2
-python-isort 7.0.0-2
-python-jupyter-client 8.8.0-2
-python-mypy_extensions 1.1.0-2
-python-pillow 12.1.0-2
-python-pip 25.3-3
-python-pynvim 0.6.0-2
-python-ruff 0.14.14-1
-qemu-full 10.2.0-1
-qt5-wayland 5.15.18+kde+r55-1
-qt6-wayland 6.10.1-1
-reflector 2023-5
-ripgrep 15.1.0-1
-rofi 2.0.0-1
-rsync 3.4.1-2
-rustup 1.28.2-4
-shfmt 3.12.0-1
-signal-desktop 7.87.0-1
-slop 7.7-4
-slurp 1.5.0-1
-socat 1.8.1.0-1
-sway 1:1.11-1
-swaybg 1.2.1-1
-swayidle 1.9.0-1
-swaylock 1.8.4-1
-task 3.4.2-1
-telegram-desktop 6.4.2-1
-tesseract 5.5.2-1
-tesseract-data-eng 2:4.1.0-4
-texlab 5.25.1-1
-texlive-binextra 2025.2-3
-texlive-fontsrecommended 2025.2-3
-texlive-latex 2025.2-3
-texlive-latexextra 2025.2-3
-time 1.9-6
-tinymist 1:0.14.10-1
-tmux 3.6_a-1
-tree-sitter-cli 0.25.10-3
-ttf-jetbrains-mono 2.304-2
-typst 1:0.14.2-1
-typstyle 0.14.4-2
-uv 0.9.28-1
-valgrind 3.25.1-3
-vde2 2.3.3-8
-virt-manager 5.1.0-3
-virt-viewer 11.0-4
-waybar 0.14.0-6
-webkit2gtk 2.50.4-1
-websocat 1.14.0-1
-wev 1.1.0-1
-wf-recorder 0.6.0-1
-wireplumber 0.5.13-1
-wl-clipboard 1:2.2.1-3
-woff2-font-awesome 7.1.0-1
-xclip 0.13-6
-xdg-desktop-portal 1.20.3-2
-xdg-desktop-portal-gtk 1.15.3-1
-xdg-desktop-portal-hyprland 1.3.11-3
-xf86-video-intel 1:2.99.917+939+g4a64400e-1
-xorg-server 21.1.21-1
-xorg-setxkbmap 1.3.4-2
-xorg-xev 1.2.6-1
-xorg-xhost 1.0.10-1
-xorg-xinit 1.4.4-1
-xorg-xinput 1.6.4-2
-xorg-xmodmap 1.0.11-2
-xorg-xrandr 1.5.3-1
-xorg-xrdb 1.2.2-2
-xorg-xset 1.2.5-2
-xss-lock 0.4.0-1
-yq 3.4.3-3
-yubikey-manager 1:5.8.0-2
-zsh 5.9-5
+act
+aws-cli
+base
+base-devel
+biber
+bind
+bitwarden-cli
+bluez
+bluez-utils
+brightnessctl
+buf
+cliphist
+cmake
+dash
+dhcpcd
+direnv
+discord
+dmidecode
+dnsmasq
+docker
+docker-compose
+dunst
+efibootmgr
+ex-vi-compat
+eza
+fd
+feh
+ffmpegthumbnailer
+fontforge
+fzf
+gdb
+geoclue
+ghostty
+git
+git-lfs
+github-cli
+glab
+gnome-desktop
+gnome-epub-thumbnailer
+go
+graphicsmagick
+grim
+grub
+gst-libav
+gst-plugins-bad
+hypridle
+hyprland
+hyprlock
+hyprpaper
+imagemagick
+iptables-nft
+iwd
+jq
+jupyter-notebook
+jupyter-server
+kdialog
+keyd
+kitty
+lf
+libcurl-compat
+libcurl-gnutls
+libfido2
+libmupdf
+libreoffice-fresh
+libxinerama
+linux
+linux-firmware
+linux-headers
+lua-language-server
+lua51
+luarocks
+maim
+man-db
+man-pages
+mpv
+mypy
+ninja
+ntfs-3g
+nvidia-open
+ocaml
+opam
+openbsd-netcat
+opendoas
+openresolv
+openssh
+os-prober
+pass
+pavucontrol
+perf
+perl-file-homedir
+perl-image-exiftool
+perl-yaml-tiny
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+poppler
+postgresql
+python-black
+python-cpplint
+python-isort
+python-jupyter-client
+python-mypy_extensions
+python-pillow
+python-pip
+python-pynvim
+python-ruff
+qemu-full
+qt5-wayland
+qt6-wayland
+reflector
+ripgrep
+rofi
+rsync
+rustup
+shfmt
+signal-desktop
+slop
+slurp
+socat
+sway
+swaybg
+swayidle
+swaylock
+task
+telegram-desktop
+tesseract
+tesseract-data-eng
+texlab
+texlive-binextra
+texlive-fontsrecommended
+texlive-latex
+texlive-latexextra
+time
+tinymist
+tmux
+tree-sitter-cli
+ttf-jetbrains-mono
+typst
+typstyle
+uv
+valgrind
+vde2
+virt-manager
+virt-viewer
+waybar
+webkit2gtk
+websocat
+wev
+wf-recorder
+wireplumber
+wl-clipboard
+woff2-font-awesome
+xclip
+xdg-desktop-portal
+xdg-desktop-portal-gtk
+xdg-desktop-portal-hyprland
+xf86-video-intel
+xorg-server
+xorg-setxkbmap
+xorg-xev
+xorg-xhost
+xorg-xinit
+xorg-xinput
+xorg-xmodmap
+xorg-xrandr
+xorg-xrdb
+xorg-xset
+xss-lock
+yq
+yubikey-manager
+zsh

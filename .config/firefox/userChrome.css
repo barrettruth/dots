@@ -45,7 +45,6 @@ zen-workspace[active] tab:not([zen-glance-tab="true"]) {
   display: none !important;
 }
 
-.tab-icon-overlay[muted],
-.tab-icon-overlay[soundplaying] {
+#zen-media-controls-toolbar {
   display: none !important;
 }
