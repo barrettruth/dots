@@ -101,6 +101,7 @@ fi
 
 test -d "$XDG_CONFIG_HOME/fzf/themes" && ln -sf "$XDG_CONFIG_HOME/fzf/themes/$theme" "$XDG_CONFIG_HOME/fzf/themes/theme"
 test -d "$XDG_CONFIG_HOME/rg/themes" && ln -sf "$XDG_CONFIG_HOME/rg/themes/$theme" "$XDG_CONFIG_HOME/rg/themes/theme"
+test -d "$XDG_CONFIG_HOME/sioyek/themes" && ln -sf "$XDG_CONFIG_HOME/sioyek/themes/$theme.config" "$XDG_CONFIG_HOME/sioyek/themes/theme.config"
 test -d "$XDG_CONFIG_HOME/task/themes" && ln -sf "$XDG_CONFIG_HOME/task/themes/$theme.theme" "$XDG_CONFIG_HOME/task/themes/theme.theme"
 
 if command -v claude >/dev/null 2>&1; then

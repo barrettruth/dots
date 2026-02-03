@@ -30,11 +30,14 @@ j() {
         site) cd ~/dev/barrettruth.com;;
         cp) cd ~/dev/competitive-programming;;
         trb) cd ~/dev/trb-capital-management;;
-        lazy) cd ~/.local/share/nvim/lazy;;
+        lz) cd ~/.local/share/nvim/lazy;;
         scr) cd "$SCRIPTS";;
         uva) cd ~/dev/uva;;
-        config) cd "$XDG_CONFIG_HOME";;
-        nvim | lf | tmux | zsh | X11) cd "$XDG_CONFIG_HOME/$1";;
+        cf) cd "$XDG_CONFIG_HOME";;
+        nvim|nv) cd "$XDG_CONFIG_HOME/nvim";;
+        x|x11|X11) cd "$XDG_CONFIG_HOME/X11";;
+        tm|tmux) cd "$XDG_CONFIG_HOME/tmux";;
+        lf | zsh) cd "$XDG_CONFIG_HOME/$1";;
         *) cd "$@";;
     esac
 }

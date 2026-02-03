@@ -108,5 +108,7 @@ bindkey '^J' backward-char
 bindkey '^K' forward-char
 
 eval "$(direnv hook zsh)"
+eval "$(zoxide init zsh)"
 
 . "$ZDOTDIR"/.zaliases
+

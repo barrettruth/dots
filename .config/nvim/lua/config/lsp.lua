@@ -84,9 +84,6 @@ local FORMAT_LSPS = { 'null-ls', 'clangd', 'tinymist', 'ruff' }
 function M.format(opts)
     local format_opts = vim.tbl_extend('force', opts or {}, {
         filter = function(c)
-            if c.name == 'typescript-tools' then
-                vim.cmd.TSToolsOrganizeImports()
-            end
             return vim.tbl_contains(FORMAT_LSPS, c.name)
         end,
     })

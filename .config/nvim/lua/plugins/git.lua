@@ -12,10 +12,17 @@ return {
     },
     {
         'tpope/vim-fugitive',
-        dependencies = {
-            { dir = '~/dev/fugitive-ts.nvim', opts = { debug = true } },
+        cmd = { 'Git', 'G', 'Gread', 'Gwrite', 'Gdiffsplit', 'Gvdiffsplit' },
+    },
+    {
+        dir = '~/dev/diffs.nvim',
+        ft = { 'git', 'fugitive', 'diff' },
+        opts = {
+            hide_prefix = true,
+            highlights = {
+                gutter = true,
+            },
         },
-        cmd = 'Git',
     },
     {
         'folke/snacks.nvim',

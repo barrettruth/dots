@@ -45,10 +45,10 @@ bar)
 switch)
   mux-switch "$2"
   ;;
-claude)
-  spawn_or_focus claude 'claude --chrome'
+ai)
+  spawn_or_focus ai 'claude'
   ;;
-nvim)
+code)
   spawn_or_focus nvim 'nvim -c "lua require([[config.tmux]]).run([[nvim]])"'
   ;;
 git)
@@ -64,6 +64,9 @@ run)
   ;;
 term)
   spawn_or_focus term
+  ;;
+misc)
+  spawn_or_focus misc
   ;;
 *)
   tmux attach

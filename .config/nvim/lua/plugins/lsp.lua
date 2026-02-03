@@ -181,7 +181,7 @@ return {
                 on_attach = require('config.lsp').on_attach,
             })
         end,
-        dependencies = { 'nvimtools/none-ls-extras.nvim' },
+        dependencies = { 'nvimtools/none-ls-extras.nvim', 'nvim-lua/plenary.nvim' },
     },
     {
         'b0o/SchemaStore.nvim',
@@ -281,70 +281,6 @@ return {
                 end,
             },
         },
-    },
-    {
-        'pmizio/typescript-tools.nvim',
-        opts = {
-            on_attach = function(_, bufnr)
-                bmap(
-                    { 'n', 'gD', vim.cmd.TSToolsGoToSourceDefinition },
-                    { buffer = bufnr }
-                )
-            end,
-            handlers = {
-                ['textDocument/publishDiagnostics'] = function(_, result, ctx)
-                    if not result.diagnostics then
-                        return
-                    end
-
-                    local idx = 1
-                    while idx <= #result.diagnostics do
-                        local entry = result.diagnostics[idx]
-
-                        local formatter =
-                            require('format-ts-errors')[entry.code]
-                        entry.message = formatter and formatter(entry.message)
-                            or entry.message
-
-                        if vim.tbl_contains({ 80001, 80006 }, entry.code) then
-                            table.remove(result.diagnostics, idx)
-                        else
-                            idx = idx + 1
-                        end
-                    end
-
-                    vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx)
-                end,
-            },
-
-            settings = {
-                expose_as_code_action = 'all',
-                -- tsserver_path = vim.env.XDG_DATA_HOME .. '/pnpm/tsserver',
-                tsserver_file_preferences = {
-                    includeInlayarameterNameHints = 'all',
-                    includeInlayarameterNameHintsWhenArgumentMatchesName = false,
-                    includeInlayFunctionParameterTypeHints = true,
-                    includeInlayVariableTypeHints = true,
-                    includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                    includeInlayPropertyDeclarationTypeHints = true,
-                    includeInlayFunctionLikeReturnTypeHints = true,
-                    includeInlayEnumMemberValueHints = true,
-                },
-            },
-        },
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-        },
-        ft = {
-            'javascript',
-            'javascriptreact',
-            'typescript',
-            'typescriptreact',
-        },
-    },
-    {
-        'mrcjkb/rustaceanvim',
-        ft = { 'rust' },
     },
     {
         'SmiteshP/nvim-navic',

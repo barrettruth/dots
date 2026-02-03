@@ -107,6 +107,7 @@ pull)
   slack) CLASS="Slack" ;;
   discord) CLASS="discord" ;;
   vesktop) CLASS="vesktop" ;;
+  element-desktop | element) CLASS="element" ;;
   *) CLASS="$APP" ;;
   esac
 
@@ -197,6 +198,7 @@ spawnfocus)
   slack) CLASS="Slack" ;;
   discord) CLASS="discord" ;;
   vesktop) CLASS="vesktop" ;;
+  element-desktop | element) CLASS="element" ;;
   *) CLASS="$APP" ;;
   esac
 
