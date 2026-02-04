@@ -1,0 +1,50 @@
+#vertical-pinned-tabs-container > .zen-workspace-tabs-section[hidden="true"] {
+  display: none !important;
+}
+
+tabs {
+  counter-reset: tab-counter;
+}
+
+hbox.zen-essentials-container tab:not([zen-glance-tab="true"]),
+zen-workspace[active] tab:not([zen-glance-tab="true"]) {
+  counter-increment: tab-counter;
+}
+
+@media (-moz-bool-pref: "zen.view.sidebar-expanded") {
+  tab:not([zen-glance-tab="true"]) > .tab-stack > .tab-content::before {
+    content: counter(tab-counter);
+    font-weight: normal;
+    font-size: 100%;
+    color: inherit;
+    z-index: -100;
+    display: inline-block;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    margin-left: 3px;
+    margin-right: 5px;
+  }
+}
+
+@media not (-moz-bool-pref: "zen.view.sidebar-expanded") {
+  tab:not([zen-glance-tab="true"]) > .tab-stack > .tab-content::before {
+    content: counter(tab-counter) "";
+    position: absolute;
+    top: 4px;
+    left: 1px;
+    z-index: -100;
+    font-weight: normal;
+    font-size: 100%;
+    color: inherit;
+  }
+}
+
+.zen-current-workspace-indicator {
+  display: none !important;
+}
+
+#zen-media-controls-toolbar {
+  display: none !important;
+}
