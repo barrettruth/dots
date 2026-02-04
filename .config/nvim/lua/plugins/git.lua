@@ -7,6 +7,7 @@ local prev = nil
 return {
     {
         dir = '~/dev/resolve.nvim',
+        enabled = false,
         opts = {},
         event = { 'BufReadPre', 'BufNewFile' },
     },

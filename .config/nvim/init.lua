@@ -61,5 +61,5 @@ require('lazy').setup('plugins', {
                 'bugreport',
             },
         },
-    }
+    },
 })

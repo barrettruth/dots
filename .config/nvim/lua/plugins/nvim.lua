@@ -15,8 +15,11 @@ return {
     {
         'barrettruth/import-cost.nvim',
         dir = '~/dev/import-cost.nvim',
-        build = 'sh install.sh yarn',
-        ft = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+        init = function()
+            vim.g.import_cost = {
+                package_manager = 'npm',
+            }
+        end,
     },
     {
         'echasnovski/mini.pairs',
