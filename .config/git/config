@@ -36,6 +36,7 @@
     sm = submodule
     st = stash
     sw = switch
+    t = tag
     wt = worktree
 [credential "https://source.developers.google.com"]
     helper = gcloud.sh

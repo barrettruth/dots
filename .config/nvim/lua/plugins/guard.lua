@@ -4,7 +4,12 @@ end
 
 return {
     'nvimdev/guard.nvim',
-    dependencies = { 'nvimdev/guard-collection' },
+    dependencies = {
+        {
+            'nvimdev/guard-collection',
+            dir = vim.fn.expand('~/dev/guard-collection'),
+        },
+    },
     config = function()
         vim.g.guard_config = {
             fmt_on_save = false,
@@ -72,36 +77,20 @@ return {
         end
 
         if executable('zsh') then
-            ft('zsh'):lint({
-                cmd = 'zsh',
-                args = { '-n' },
-                fname = true,
-            })
+            ft('zsh'):lint('zsh')
         end
 
         if executable('buf') then
-            ft('proto'):fmt({
-                cmd = 'buf',
-                args = { 'format', '-w' },
-                fname = true,
-            }):lint({
-                cmd = 'buf',
-                args = { 'lint' },
-                fname = true,
-            })
+            ft('proto'):fmt('buf'):lint('buf')
         end
 
         if executable('hadolint') then
+            local base = require('guard-collection.linter.hadolint')
             ft('dockerfile'):lint({
                 cmd = 'hadolint',
                 args = { '--no-fail', '-f', 'json' },
                 fname = true,
-                parse = require('guard.lint').from_json({
-                    attributes = {
-                        severity = 'level',
-                    },
-                    source = 'hadolint',
-                }),
+                parse = base.parse,
             })
         end
 
@@ -110,33 +99,26 @@ return {
         end
 
         if executable('cmake-format') then
-            ft('cmake'):fmt({
-                cmd = 'cmake-format',
-                args = { '-' },
-                stdin = true,
-            })
+            ft('cmake'):fmt('cmake-format')
         end
 
         if executable('checkmake') then
-            ft('make'):lint({
-                cmd = 'checkmake',
-                fname = true,
-            })
+            ft('make'):lint('checkmake')
         end
 
         if executable('cpplint') then
+            local base = require('guard-collection.linter.cpplint')
             ft('cpp'):lint({
-                cmd = 'cpplint',
-                args = { '--filter=-legal/copyright,-whitespace/indent' },
-                fname = true,
-            })
-        end
-
-        if executable('vacuum') then
-            ft('yaml,json'):lint({
-                cmd = 'vacuum',
-                args = { 'lint' },
-                fname = true,
+                fn = function(_, fname)
+                    local co = assert(coroutine.running())
+                    vim.system(
+                        { 'cpplint', '--filter=-legal/copyright,-whitespace/indent', fname },
+                        {},
+                        function(r) coroutine.resume(co, r.stderr or '') end
+                    )
+                    return coroutine.yield()
+                end,
+                parse = base.parse,
             })
         end
 

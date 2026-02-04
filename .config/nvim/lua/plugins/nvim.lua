@@ -1,10 +1,22 @@
 return {
     {
         'barrettruth/live-server.nvim',
+        dir = '~/dev/live-server.nvim',
         build = 'pnpm add -g live-server',
-        cmd = { 'LiveServerStart', 'LiveServerStart' },
-        config = true,
+        cmd = { 'LiveServerStart', 'LiveServerStop', 'LiveServerToggle' },
         keys = { { '<leader>L', '<cmd>LiveServerToggle<cr>' } },
+    },
+    {
+        'barrettruth/http-codes.nvim',
+        dir = '~/dev/http-codes.nvim',
+        cmd = 'HTTPCodes',
+        keys = { { '<leader>H', '<cmd>HTTPCodes<cr>' } },
+    },
+    {
+        'barrettruth/import-cost.nvim',
+        dir = '~/dev/import-cost.nvim',
+        build = 'sh install.sh yarn',
+        ft = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
     },
     {
         'echasnovski/mini.pairs',

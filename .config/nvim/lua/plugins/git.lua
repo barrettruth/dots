@@ -16,7 +16,6 @@ return {
     },
     {
         dir = '~/dev/diffs.nvim',
-        enabled = false,
         ft = { 'git', 'fugitive', 'diff' },
         init = function()
             vim.g.diffs = {
