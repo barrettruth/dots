@@ -75,8 +75,36 @@ copy_firefox_configs() {
   ensure_dir "$dest" && cp -f "$XDG_CONFIG_HOME"/firefox/userChrome.css "$dest"
 }
 
+copy_zen_configs() {
+  for d in "$HOME"/.zen/*.Default\ \(release\); do test -d "$d" && zen_profile="$d" && break; done
+  test -d "$zen_profile" || { echo "Zen profile not found"; return; }
+
+  ensure_dir .zen/chrome
+  test -f "$zen_profile/chrome/userChrome.css" && cp -f "$zen_profile/chrome/userChrome.css" .zen/chrome/
+  test -f "$zen_profile/handlers.json" && cp -f "$zen_profile/handlers.json" .zen/
+  test -f "$zen_profile/containers.json" && cp -f "$zen_profile/containers.json" .zen/
+  test -f "$zen_profile/zen-keyboard-shortcuts.json" && cp -f "$zen_profile/zen-keyboard-shortcuts.json" .zen/
+
+  if [ -f "$zen_profile/prefs.js" ]; then
+    grep -E '^user_pref\("(zen\.(tabs|theme|view|workspaces)|browser\.urlbar\.shortcuts)\.' "$zen_profile/prefs.js" \
+      | grep -vE '(migration|updates|welcome|mods\.|keyboard\.shortcuts\.version|urlbar\.suggestions-learner|workspaces\.active)' \
+      > .zen/user.js
+  fi
+
+  if [ -f "$zen_profile/extensions.json" ]; then
+    python -c "
+import sys,json
+d=json.load(open('$zen_profile/extensions.json'))
+for e in d.get('addons',[]):
+  if e.get('type')=='extension' and not e.get('hidden') and 'mozilla' not in e['id']:
+    print(f\"{e['id']}: {e.get('defaultLocale',{}).get('name','?')}\")
+" > .zen/extensions.txt 2>/dev/null
+  fi
+}
+
 copy_pkg_lists
 copy_xdg_configs
 copy_etc_configs
 copy_nix_configs
 copy_firefox_configs
+copy_zen_configs

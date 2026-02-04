@@ -28,6 +28,9 @@ return {
                 ),
             })
         end,
+        opts = {
+            auto_install = true,
+        },
     },
     {
         'nvim-treesitter/nvim-treesitter-textobjects',

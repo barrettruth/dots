@@ -23,7 +23,7 @@ au('BufWritePost', {
         local targets =
             vim.fn.glob(vim.env.HOME .. '/.zen/*release*/chrome', true, true)
         for _, dir in ipairs(targets) do
-            vim.fn.system({ 'cp', src, dir .. '/userChrome.css' })
+            vim.fn.system({ 'cp', '-f', src, dir .. '/userChrome.css' })
         end
     end,
     group = aug,

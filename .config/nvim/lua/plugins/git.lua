@@ -16,13 +16,18 @@ return {
     },
     {
         dir = '~/dev/diffs.nvim',
+        enabled = false,
         ft = { 'git', 'fugitive', 'diff' },
-        opts = {
-            hide_prefix = true,
-            highlights = {
-                gutter = true,
-            },
-        },
+        init = function()
+            vim.g.diffs = {
+                hide_prefix = true,
+                highlights = {
+                    vim = {
+                        enabled = true,
+                    },
+                },
+            }
+        end,
     },
     {
         'folke/snacks.nvim',

@@ -79,16 +79,8 @@ function M.on_attach(client, bufnr)
     end
 end
 
-local FORMAT_LSPS = { 'null-ls', 'clangd', 'tinymist', 'ruff' }
-
-function M.format(opts)
-    local format_opts = vim.tbl_extend('force', opts or {}, {
-        filter = function(c)
-            return vim.tbl_contains(FORMAT_LSPS, c.name)
-        end,
-    })
-    vim.lsp.buf.format(format_opts)
-    vim.cmd.w()
+function M.format()
+    vim.cmd.Guard('fmt')
 end
 
 return M

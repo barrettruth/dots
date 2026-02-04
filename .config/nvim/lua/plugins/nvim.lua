@@ -413,18 +413,8 @@ return {
     {
         'barrettruth/midnight.nvim',
         dir = '~/dev/midnight.nvim',
-        priority = 1000,
         config = function()
-            vim.cmd.colorscheme(vim.o.background == 'dark' and 'midnight' or 'daylight')
-            vim.api.nvim_create_autocmd('OptionSet', {
-                pattern = 'background',
-                callback = function()
-                    vim.cmd.colorscheme(
-                        vim.o.background == 'dark' and 'midnight' or 'daylight'
-                    )
-                end,
-                group = vim.api.nvim_create_augroup('AColorScheme', { clear = true }),
-            })
+            vim.cmd.colorscheme('midnight')
         end,
     },
 }
