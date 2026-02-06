@@ -4,7 +4,7 @@ user_pref("browser.urlbar.shortcuts.tabs", false);
 user_pref("zen.tabs.show-newtab-vertical", false);
 user_pref("zen.theme.border-radius", 0);
 user_pref("zen.theme.content-element-separation", 0);
-user_pref("zen.view.compact.enable-at-startup", false);
+user_pref("zen.view.compact.enable-at-startup", true);
 user_pref("zen.view.compact.hide-toolbar", true);
 user_pref("zen.view.compact.toolbar-hide-after-hover.duration", 0);
 user_pref("zen.view.experimental-no-window-controls", true);

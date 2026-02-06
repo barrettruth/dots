@@ -6,6 +6,7 @@ o.breakindent = true
 
 o.cursorline = true
 
+o.cmdheight = 0
 o.conceallevel = 0
 
 opt.diffopt:append('linematch:60')

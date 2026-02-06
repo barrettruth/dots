@@ -56,8 +56,6 @@ return {
             local select_maps = {
                 { 'aa', '@parameter.outer' },
                 { 'ia', '@parameter.inner' },
-                { 'ab', '@block.outer' },
-                { 'ib', '@block.inner' },
                 { 'as', '@class.outer' },
                 { 'is', '@class.inner' },
                 { 'aC', '@call.outer' },

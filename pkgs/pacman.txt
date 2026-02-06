@@ -26,6 +26,7 @@ eza
 fd
 feh
 ffmpegthumbnailer
+firefox
 fontforge
 fzf
 gdb

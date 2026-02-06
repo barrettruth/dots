@@ -6,6 +6,7 @@ cmake-format
 cmake-lint
 electron39-bin
 flamegraph
+google-chrome
 hadolint-bin
 neovim-nightly-bin
 nvm-git

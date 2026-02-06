@@ -82,9 +82,6 @@ return {
         opts_extend = { 'sources.default' },
     },
     {
-        'b0o/SchemaStore.nvim',
-    },
-    {
         'saecki/live-rename.nvim',
         event = 'LspAttach',
         config = function(_, opts)

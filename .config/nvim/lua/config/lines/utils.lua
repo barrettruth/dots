@@ -16,15 +16,12 @@ function M.format_components(components)
     for i = 1, #components do
         local component = components[i]
 
-        local highlight = vim.env.THEME == 'midnight' and 'Normal'
-            or component.highlight
-
         if
             vorfn(component.condition) ~= false
             and not utils.empty(vorfn(component.value))
         then
             side[#side + 1] = ('%%#%s#%s%%#%s#'):format(
-                highlight,
+                component.highlight or 'Normal',
                 vorfn(component.value),
                 component.highlight or 'Normal'
             )

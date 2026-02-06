@@ -79,12 +79,12 @@ function M.on_attach(client, bufnr)
     end
 end
 
-function M.format()
+function M.format(opts)
     local ok, guard = pcall(require, 'guard')
     if ok then
         guard.fmt()
     else
-        vim.lsp.buf.format({ async = true })
+        vim.lsp.buf.format(opts or { async = true })
     end
 end
 

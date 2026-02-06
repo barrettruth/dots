@@ -27,7 +27,7 @@ vim.lsp.config('*', {
     flags = { debounce_text_changes = 0 },
 })
 
-bmap({ { 'n', 'x' }, 'gF', lsp.format })
+map({ { 'n', 'x' }, 'gF', lsp.format })
 
 for _, server in ipairs({
     'bashls',

@@ -10,7 +10,11 @@ end
 
 ---@disable_fzf_lua_reload boolean?
 function M.reload(disable_fzf_lua_reload)
-    local lines = vim.fn.readfile(vim.fn.expand('~/.config/fzf/themes/theme'))
+    local path = vim.fn.expand('~/.config/fzf/themes/theme')
+    if vim.fn.filereadable(path) == 0 then
+        return
+    end
+    local lines = vim.fn.readfile(path)
     if not lines or #lines == 0 then
         return
     end

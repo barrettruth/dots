@@ -1,4 +1,4 @@
-local clang_format_content = [[BasedOnStyle: LLVM
+local clang_format = [[BasedOnStyle: LLVM
 IndentWidth: 2
 UseTab: Never
 
@@ -16,6 +16,115 @@ AlignAfterOpenBracket: Align
 BinPackArguments: false
 BinPackParameters: false]]
 
+local cpp_base = [[#include <bits/stdc++.h>  // {{{
+
+#include <version>
+#ifdef __cpp_lib_ranges_enumerate
+#include <ranges>
+namespace rv = std::views;
+namespace rs = std::ranges;
+#endif
+
+#pragma GCC optimize("O2,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+using namespace std;
+
+using i32 = int32_t;
+using u32 = uint32_t;
+using i64 = int64_t;
+using u64 = uint64_t;
+using f64 = double;
+using f128 = long double;
+
+#if __cplusplus >= 202002L
+template <typename T>
+constexpr T MIN = std::numeric_limits<T>::min();
+
+template <typename T>
+constexpr T MAX = std::numeric_limits<T>::max();
+#endif
+
+#ifdef LOCAL
+#define db(...) std::print(__VA_ARGS__)
+#define dbln(...) std::println(__VA_ARGS__)
+#else
+#define db(...)
+#define dbln(...)
+#endif
+//  }}}
+
+void solve() {
+  <++>
+}
+
+int main() {  // {{{
+  std::cin.exceptions(std::cin.failbit);
+#ifdef LOCAL
+  std::cerr.rdbuf(std::cout.rdbuf());
+  std::cout.setf(std::ios::unitbuf);
+  std::cerr.setf(std::ios::unitbuf);
+#else
+  std::cin.tie(nullptr)->sync_with_stdio(false);
+#endif
+]]
+
+local cpp_single = cpp_base .. [[  solve();
+  return 0;
+}  // }}}]]
+
+local cpp_multi = cpp_base .. [[  u32 tc = 1;
+  std::cin >> tc;
+  for (u32 t = 0; t < tc; ++t) {
+    solve();
+  }
+  return 0;
+}  // }}}]]
+
+local templates = {
+    cpp = {
+        default = cpp_multi,
+        codeforces = cpp_multi,
+        atcoder = cpp_single,
+        cses = cpp_single,
+    },
+    python = {
+        default = [[def main() -> None:
+    <++>
+
+
+if __name__ == '__main__':
+    main()]],
+    },
+}
+
+local function insert_template(buf, lang, platform)
+    local lang_templates = templates[lang]
+    if not lang_templates then
+        return false
+    end
+
+    local template = lang_templates[platform] or lang_templates.default
+    if not template then
+        return false
+    end
+
+    local lines = vim.split(template, '\n')
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+    for lnum, line in ipairs(lines) do
+        local col = line:find('<++>', 1, true)
+        if col then
+            local new_line = line:sub(1, col - 1) .. line:sub(col + 4)
+            vim.api.nvim_buf_set_lines(buf, lnum - 1, lnum, false, { new_line })
+            vim.api.nvim_win_set_cursor(0, { lnum, col - 1 })
+            break
+        end
+    end
+
+    return true
+end
+
 return {
     'barrettruth/cp.nvim',
     dir = '~/dev/cp.nvim',
@@ -30,11 +139,8 @@ return {
         { ']c', '<cmd>CP next<cr>' },
         { '[c', '<cmd>CP prev<cr>' },
     },
-    dependencies = {
-        'L3MON4D3/LuaSnip',
-    },
     init = function()
-        vim.g.cp_config = {
+        vim.g.cp = {
             debug = false,
             languages = {
                 cpp = {
@@ -121,38 +227,16 @@ return {
                     local buf = vim.api.nvim_get_current_buf()
                     local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, true)
                     if #lines > 1 or (#lines == 1 and lines[1] ~= '') then
-                        local pos = vim.api.nvim_win_get_cursor(0)
-                        vim.api.nvim_win_set_cursor(0, pos)
                         return
                     end
 
-                    local trigger = state.get_platform() or ''
-                    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { trigger })
-                    vim.api.nvim_win_set_cursor(0, { 1, #trigger })
-                    vim.cmd.startinsert({ bang = true })
-                    vim.schedule(function()
-                        local ls = require('luasnip')
-                        if ls.expandable() then
-                            vim.api.nvim_create_autocmd('TextChanged', {
-                                buffer = buf,
-                                once = true,
-                                callback = function()
-                                    vim.schedule(function()
-                                        local pos = vim.api.nvim_win_get_cursor(0)
-                                        vim.api.nvim_win_set_cursor(0, pos)
-                                    end)
-                                end,
-                            })
-                            ls.expand()
-                        end
-                        vim.cmd.stopinsert()
-                    end)
+                    local lang = state.get_language()
+                    local platform = state.get_platform()
+                    insert_template(buf, lang, platform)
+
                     local clang_format_path = vim.fn.getcwd() .. '/.clang-format'
                     if vim.fn.filereadable(clang_format_path) == 0 then
-                        vim.fn.writefile(
-                            vim.split(clang_format_content, '\n'),
-                            clang_format_path
-                        )
+                        vim.fn.writefile(vim.split(clang_format, '\n'), clang_format_path)
                     end
                 end,
             },

@@ -1,30 +1,88 @@
 return {
     {
-        'barrettruth/live-server.nvim',
-        dir = '~/dev/live-server.nvim',
-        build = 'pnpm add -g live-server',
-        cmd = { 'LiveServerStart', 'LiveServerStop', 'LiveServerToggle' },
-        keys = { { '<leader>L', '<cmd>LiveServerToggle<cr>' } },
-    },
-    {
-        'barrettruth/http-codes.nvim',
-        dir = '~/dev/http-codes.nvim',
-        cmd = 'HTTPCodes',
-        keys = { { '<leader>H', '<cmd>HTTPCodes<cr>' } },
-    },
-    {
-        'barrettruth/import-cost.nvim',
-        dir = '~/dev/import-cost.nvim',
-        init = function()
-            vim.g.import_cost = {
-                package_manager = 'npm',
-            }
-        end,
-    },
-    {
         'echasnovski/mini.pairs',
         config = true,
         event = 'InsertEnter',
+    },
+    {
+        'echasnovski/mini.ai',
+        opts = {
+            custom_textobjects = {
+                b = false,
+                f = false,
+                e = function(ai_type)
+                    local n_lines = vim.fn.line('$')
+                    local start_line, end_line = 1, n_lines
+                    if ai_type == 'i' then
+                        while start_line <= n_lines and vim.fn.getline(start_line):match('^%s*$') do
+                            start_line = start_line + 1
+                        end
+                        while end_line >= start_line and vim.fn.getline(end_line):match('^%s*$') do
+                            end_line = end_line - 1
+                        end
+                    end
+                    local to_col = math.max(vim.fn.getline(end_line):len(), 1)
+                    return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
+                end,
+                l = function(ai_type)
+                    local line_num = vim.fn.line('.')
+                    local line = vim.fn.getline(line_num)
+                    if line == '' then
+                        return { from = { line = line_num, col = 1 }, to = { line = line_num, col = 1 } }
+                    end
+                    local start_col, end_col
+                    if ai_type == 'i' then
+                        start_col = line:find('%S') or 1
+                        end_col = line:match('.*%S()') or 1
+                    else
+                        start_col, end_col = 1, line:len()
+                    end
+                    return { from = { line = line_num, col = start_col }, to = { line = line_num, col = end_col } }
+                end,
+                I = function(ai_type)
+                    local cur_line = vim.fn.line('.')
+                    local cur_indent = vim.fn.indent(cur_line)
+                    if vim.fn.getline(cur_line):match('^%s*$') then
+                        local search_line = cur_line + 1
+                        while search_line <= vim.fn.line('$') and vim.fn.getline(search_line):match('^%s*$') do
+                            search_line = search_line + 1
+                        end
+                        if search_line <= vim.fn.line('$') then
+                            cur_indent = vim.fn.indent(search_line)
+                        end
+                    end
+                    local start_line, end_line = cur_line, cur_line
+                    while start_line > 1 do
+                        local prev = start_line - 1
+                        local prev_blank = vim.fn.getline(prev):match('^%s*$')
+                        if ai_type == 'i' and prev_blank then
+                            break
+                        end
+                        if not prev_blank and vim.fn.indent(prev) < cur_indent then
+                            break
+                        end
+                        start_line = prev
+                    end
+                    while end_line < vim.fn.line('$') do
+                        local next = end_line + 1
+                        local next_blank = vim.fn.getline(next):match('^%s*$')
+                        if ai_type == 'i' and next_blank then
+                            break
+                        end
+                        if not next_blank and vim.fn.indent(next) < cur_indent then
+                            break
+                        end
+                        end_line = next
+                    end
+                    local to_col = math.max(vim.fn.getline(end_line):len(), 1)
+                    return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
+                end,
+            },
+        },
+        keys = {
+            { 'a', mode = { 'x', 'o' } },
+            { 'i', mode = { 'x', 'o' } },
+        },
     },
     {
         'iamcco/markdown-preview.nvim',
@@ -62,88 +120,6 @@ return {
             vim.g.vimtex_quickfix_mode = 0
         end,
         ft = { 'plaintext', 'tex' },
-    },
-    {
-        'L3MON4D3/LuaSnip',
-        build = 'make install_jsregexp',
-        config = function()
-            local ls = require('luasnip')
-
-            ls.filetype_extend('htmldjango', { 'html' })
-            ls.filetype_extend('markdown', { 'html' })
-            ls.filetype_extend('javascriptreact', { 'javascript', 'html' })
-            ls.filetype_extend('typescript', { 'javascript' })
-            ls.filetype_extend(
-                'typescriptreact',
-                { 'javascriptreact', 'javascript', 'html' }
-            )
-
-            require('luasnip.loaders.from_lua').lazy_load()
-        end,
-        keys = {
-            -- restore digraph mapping
-            { '<c-d>', '<c-k>', mode = 'i' },
-            {
-                '<c-space>',
-                '<cmd>lua require("luasnip").expand()<cr>',
-                mode = 'i',
-            },
-            {
-                '<c-h>',
-                '<cmd>lua if require("luasnip").jumpable(-1) then require("luasnip").jump(-1) end<cr>',
-                mode = { 'i', 's' },
-            },
-            {
-                '<c-l>',
-                '<cmd>lua if require("luasnip").jumpable(1) then require("luasnip").jump(1) end<cr>',
-                mode = { 'i', 's' },
-            },
-            {
-                '<c-j>',
-                '<cmd>lua if require("luasnip").choice_active() then require("luasnip").change_choice(-1) end<cr>',
-                mode = 'i',
-            },
-            {
-                '<c-k>',
-                '<cmd>lua if require("luasnip").choice_active() then require("luasnip").change_choice(1) end<cr>',
-                mode = 'i',
-            },
-        },
-        opts = {
-            region_check_events = 'InsertEnter',
-            delete_check_events = {
-                'TextChanged',
-                'TextChangedI',
-                'InsertLeave',
-            },
-            ext_opts = {
-                [require('luasnip.util.types').choiceNode] = {
-                    active = {
-                        virt_text = {
-                            {
-                                ' <- ',
-                                vim.wo.cursorline and 'CursorLine' or 'Normal',
-                            },
-                        },
-                    },
-                },
-            },
-        },
-    },
-    {
-        'laytan/cloak.nvim',
-        config = true,
-        keys = { { '<leader>Ct', '<cmd>CloakToggle<cr>' } },
-        event = 'BufReadPre .env*',
-    },
-    {
-        'maxmellon/vim-jsx-pretty',
-        ft = {
-            'javascript',
-            'javascriptreact',
-            'typescript',
-            'typescriptreact',
-        },
     },
     {
         'monaqa/dial.nvim',
@@ -220,31 +196,6 @@ return {
                 end,
                 mode = 'v',
             },
-        },
-    },
-    {
-        'cbochs/grapple.nvim',
-        opts = {
-            scope = 'git_branch',
-            icons = false,
-            status = false,
-            win_opts = {
-                title = '',
-                footer = '',
-            },
-        },
-        keys = {
-            { '<leader>ha', '<cmd>Grapple toggle<cr>' },
-            { '<leader>hd', '<cmd>Grapple untag<cr>' },
-            { '<leader>hq', '<cmd>Grapple toggle_tags<cr>' },
-
-            { '<c-1>', '<cmd>Grapple select index=1<cr>' },
-            { '<c-2>', '<cmd>Grapple select index=2<cr>' },
-            { '<c-3>', '<cmd>Grapple select index=3<cr>' },
-            { '<c-4>', '<cmd>Grapple select index=4<cr>' },
-
-            { ']h', '<cmd>Grapple cycle_tags next<cr>' },
-            { '[h', '<cmd>Grapple cycle_tags prev<cr>' },
         },
     },
     {
@@ -363,51 +314,6 @@ return {
         },
     },
     {
-        'tzachar/highlight-undo.nvim',
-        config = true,
-        keys = { 'u', 'U' },
-    },
-    {
-        'kana/vim-textobj-user',
-        dependencies = {
-            {
-                'kana/vim-textobj-entire',
-                keys = {
-                    { 'ae', mode = { 'o', 'x' } },
-                    { 'ie', mode = { 'o', 'x' } },
-                },
-            },
-            {
-                'kana/vim-textobj-line',
-                keys = {
-                    { 'al', mode = { 'o', 'x' } },
-                    { 'il', mode = { 'o', 'x' } },
-                },
-            },
-            {
-                'kana/vim-textobj-indent',
-                keys = {
-                    { 'ai', mode = { 'o', 'x' } },
-                    { 'ii', mode = { 'o', 'x' } },
-                },
-            },
-            {
-                'preservim/vim-textobj-sentence',
-                keys = {
-                    { 'as', mode = { 'o', 'x' } },
-                    { 'is', mode = { 'o', 'x' } },
-                },
-            },
-            {
-                'whatyouhide/vim-textobj-xmlattr',
-                keys = {
-                    { 'ax', mode = { 'o', 'x' } },
-                    { 'ix', mode = { 'o', 'x' } },
-                },
-            },
-        },
-    },
-    {
         'saghen/blink.indent',
         opts = {
             blocked = {
@@ -427,6 +333,7 @@ return {
     },
     {
         'barrettruth/midnight.nvim',
+        enabled  = true,
         dir = '~/dev/midnight.nvim',
         config = function()
             vim.cmd.colorscheme('midnight')

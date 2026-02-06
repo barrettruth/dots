@@ -33,7 +33,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
             )
         end
     end,
-    group = vim.api.nvim_creat_augroup('AClangdKeymap', { clear = true }),
+    group = vim.api.nvim_create_augroup('AClangdKeymap', { clear = true }),
 })
 
 return vim.tbl_extend('force', clangd_settings, project_settings or {})
